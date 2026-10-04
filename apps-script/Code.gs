@@ -8,8 +8,9 @@
 
 // ---- Pas dit aan -----------------------------------------------------------
 const CONFIG = {
-  BEGUNSTIGDE: 'NAAM REKENINGHOUDER',     // naam op de rekening
-  IBAN: 'BE00 0000 0000 0000',            // rekeningnummer voor de betalingen
+  BEGUNSTIGDE: 'Pauwels Björn',           // naam op de rekening
+  IBAN: 'BE60 9731 7768 8270',            // rekeningnummer voor de betalingen
+  LEERLING: 'Annais Van Camp',            // leerling voor wie de verkoop loopt
   BIC: '',                                // optioneel, bv. 'GEBABEBB'
   DEADLINE: '2026-10-28T23:59:59+01:00',  // laatste moment om te bestellen
   BEVESTIGINGSMAIL: true,                 // koper krijgt een mail met betaalgegevens
@@ -29,7 +30,7 @@ const PRODUCTS = [
 
 const SHEET_ORDERS = 'Bestellingen';
 const SHEET_SUMMARY = 'Overzicht';
-const HEADERS = ['Tijdstip', 'Bestelnr', 'Naam', 'E-mail', 'Gsm', 'Leerling']
+const HEADERS = ['Tijdstip', 'Bestelnr', 'Naam', 'E-mail', 'Gsm']
   .concat(PRODUCTS.map(p => p.name))
   .concat(['Aantal dozen', 'Totaal (€)', 'Mededeling', 'Betaald', 'Geleverd', 'Opmerking']);
 const COL = name => HEADERS.indexOf(name) + 1;
@@ -91,7 +92,6 @@ function doPost(e) {
   const name = clean(data.name, 100);
   const email = clean(data.email, 150);
   const phone = clean(data.phone, 30);
-  const student = clean(data.student, 100);
   const note = clean(data.note, 500);
   if (!name) return json({ ok: false, error: 'Vul je naam in.' });
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return json({ ok: false, error: 'Vul een geldig e-mailadres in.' });
@@ -113,7 +113,7 @@ function doPost(e) {
     props.setProperty('seq', String(seq));
     ref = structuredRef(seq);
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_ORDERS);
-    sheet.appendRow([new Date(), orderNo(seq), cell(name), cell(email), cell(phone), cell(student)]
+    sheet.appendRow([new Date(), orderNo(seq), cell(name), cell(email), cell(phone)]
       .concat(qty)
       .concat([count, total, ref, false, false, cell(note)]));
     row = sheet.getLastRow();
@@ -155,7 +155,7 @@ function sendConfirmation(to, name, r) {
     `<tr><td>${l.qty} ×</td><td>${esc(l.name)}</td><td style="text-align:right">${euro(l.qty * l.price)}</td></tr>`).join('');
   const html =
     `<p>Dag ${esc(name)},</p>
-     <p>Bedankt voor je bestelling voor de eindejaarsreis van TSM! Je bestelnummer is <b>${r.orderNo}</b>.</p>
+     <p>Bedankt voor je bestelling bij ${esc(CONFIG.LEERLING)} voor de eindejaarsreis van TSM! Je bestelnummer is <b>${r.orderNo}</b>.</p>
      <table cellpadding="4">${rows}
        <tr><td></td><td><b>Totaal</b></td><td style="text-align:right"><b>${euro(r.total)}</b></td></tr></table>
      <p><b>Betaal vooraf via overschrijving</b>. Je bestelling is pas definitief na betaling.</p>
@@ -167,7 +167,7 @@ function sendConfirmation(to, name, r) {
      </table>
      <p>Gebruik zeker de gestructureerde mededeling, dan kunnen we je betaling aan je bestelling koppelen.</p>
      <p>De levering gebeurt op school eind november.</p>
-     <p>Bedankt voor je steun!<br>Laatstejaarsleerlingen TSM</p>`;
+     <p>Bedankt voor je steun!<br>${esc(CONFIG.LEERLING)} en de laatstejaarsleerlingen van TSM</p>`;
   MailApp.sendEmail({ to: to, subject: `Je bestelling ${r.orderNo} – wafelverkoop eindejaarsreis`, htmlBody: html });
 }
 

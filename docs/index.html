@@ -51,6 +51,7 @@ h2 { font: 600 1.4rem/1.2 var(--font-display); margin: 0 0 10px; letter-spacing:
 .facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
 .chip { font: 600 .8rem/1 var(--font-body); letter-spacing: .04em; text-transform: uppercase; padding: 7px 10px; border-radius: 4px; border: 1px solid var(--line); background: var(--surface); }
 .chip b { color: var(--orange); }
+.seller { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; }
 .notice { background: var(--surface); border: 1px solid var(--orange); border-radius: 6px; padding: 12px 14px; font-weight: 600; }
 .products { display: grid; gap: 12px; }
 .prod { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; display: grid; grid-template-columns: 120px 1fr; }
@@ -126,6 +127,8 @@ textarea { min-height: 70px; resize: vertical; }
     </div>
   </header>
 
+  <p class="seller">Je bestelt bij <b>Annais Van Camp</b>. De opbrengst gaat naar de eindejaarsreis van het zesde en zevende jaar.</p>
+
   <p class="notice" id="closed" hidden>De bestelperiode is afgelopen. Bedankt voor je steun!</p>
   <p class="notice" id="notready" hidden>Bestellen is nog niet geactiveerd. Probeer het later opnieuw.</p>
 
@@ -146,9 +149,6 @@ textarea { min-height: 70px; resize: vertical; }
         </label>
         <label for="f-phone">Gsm-nummer <span>optioneel</span>
           <input type="tel" id="f-phone" autocomplete="tel" placeholder="0470 12 34 56" maxlength="30">
-        </label>
-        <label for="f-student">Voor welke leerling bestel je? <span>optioneel</span>
-          <input type="text" id="f-student" placeholder="Naam en klas van de leerling" maxlength="100">
         </label>
         <label for="f-note">Opmerking <span>optioneel</span>
           <textarea id="f-note" maxlength="500" placeholder="Bv. wie haalt de dozen op?"></textarea>
@@ -186,7 +186,7 @@ textarea { min-height: 70px; resize: vertical; }
     </div>
   </section>
 
-  <p class="foot">Bedankt voor je steun! — Laatstejaarsleerlingen TSM</p>
+  <p class="foot">Bedankt voor je steun! — Annais Van Camp en de laatstejaarsleerlingen van TSM</p>
 </div>
 
 <div class="bar" id="bar">
@@ -291,7 +291,6 @@ $("order").addEventListener("submit", async e => {
       body: JSON.stringify({
         name, email,
         phone: $("f-phone").value.trim(),
-        student: $("f-student").value.trim(),
         note: $("f-note").value.trim(),
         website: $("f-website").value,
         qty,

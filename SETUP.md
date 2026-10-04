@@ -15,10 +15,7 @@ Reken op ongeveer 10 minuten.
 1. Ga naar [sheets.new](https://sheets.new) en noem de Sheet bv. *Wafelverkoop eindejaarsreis*.
 2. Kies **Extensies → Apps Script**.
 3. Wis de inhoud van `Code.gs` en plak de volledige inhoud van [`apps-script/Code.gs`](apps-script/Code.gs).
-4. Vul bovenaan bij `CONFIG` in:
-   - `BEGUNSTIGDE`: de naam op de rekening
-   - `IBAN`: het rekeningnummer
-   - `MELDING_NAAR`: je eigen e-mailadres, als je bij elke bestelling een mail wilt (anders leeg laten)
+4. Rekeningnummer (BE60 9731 7768 8270), naam (Pauwels Björn) en leerling (Annais Van Camp) staan al ingevuld. Wil je bij elke bestelling zelf een mail? Vul dan bij `MELDING_NAAR` je e-mailadres in.
 5. Klik op **Opslaan** (diskette-icoon).
 
 ## 2. Tabbladen aanmaken
@@ -52,7 +49,7 @@ Je kunt de URL ook aan Claude geven, dan past Claude het bestand aan.
 2. Ga naar **Settings → Pages**, kies bij *Source* **Deploy from a branch**, branch **main**, map **/docs**, en klik op **Save**.
 3. Na een minuutje staat de pagina op **https://pauwelsbjorn-cyber.github.io/claude-koekjes/**. Die link zet je in de WhatsApp-groep.
 
-Het rekeningnummer staat niet in de publieke code. Het zit alleen in het Google-script en wordt pas na een bestelling getoond.
+Het rekeningnummer staat in `apps-script/Code.gs` en is dus zichtbaar in de publieke repo. Elke koper krijgt het sowieso te zien.
 
 ## Dagelijks beheer
 
