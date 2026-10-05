@@ -115,7 +115,7 @@ function doPost(e) {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_ORDERS);
     sheet.appendRow([new Date(), orderNo(seq), cell(name), cell(email), cell(phone)]
       .concat(qty)
-      .concat([count, total, ref, false, false, cell(note)]));
+      .concat([count, total, cell(ref), false, false, cell(note)]));
     row = sheet.getLastRow();
     sheet.getRange(row, COL('Betaald'), 1, 2).insertCheckboxes();
   } finally {
@@ -155,7 +155,7 @@ function sendConfirmation(to, name, r) {
     `<tr><td>${l.qty} ×</td><td>${esc(l.name)}</td><td style="text-align:right">${euro(l.qty * l.price)}</td></tr>`).join('');
   const html =
     `<p>Dag ${esc(name)},</p>
-     <p>Bedankt voor je bestelling bij ${esc(CONFIG.LEERLING)} voor de eindejaarsreis van TSM! Je bestelnummer is <b>${r.orderNo}</b>.</p>
+     <p>Bedankt voor je bestelling bij Björn Pauwels (voor leerling ${esc(CONFIG.LEERLING)}) voor de eindejaarsreis van TSM! Je bestelnummer is <b>${r.orderNo}</b>.</p>
      <table cellpadding="4">${rows}
        <tr><td></td><td><b>Totaal</b></td><td style="text-align:right"><b>${euro(r.total)}</b></td></tr></table>
      <p><b>Betaal vooraf via overschrijving</b>. Je bestelling is pas definitief na betaling.</p>

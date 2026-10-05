@@ -127,7 +127,7 @@ textarea { min-height: 70px; resize: vertical; }
     </div>
   </header>
 
-  <p class="seller">Je bestelt bij <b>Annais Van Camp</b>. De opbrengst gaat naar de eindejaarsreis van het zesde en zevende jaar.</p>
+  <p class="seller">Je bestelt bij <b>Björn Pauwels</b> (voor leerling <b>Annais Van Camp</b>). De opbrengst gaat naar de eindejaarsreis van het zesde en zevende jaar.</p>
 
   <p class="notice" id="closed" hidden>De bestelperiode is afgelopen. Bedankt voor je steun!</p>
   <p class="notice" id="notready" hidden>Bestellen is nog niet geactiveerd. Probeer het later opnieuw.</p>
@@ -327,7 +327,9 @@ function showDone(d) {
   tr.insertCell().textContent = eur(d.total);
 
   // SEPA/EPC-QR-code: wordt door Belgische bankapps herkend als overschrijving.
-  const epc = ["BCD", "002", "1", "SCT", d.bic || "", d.beneficiary, d.iban.replace(/\s/g, ""),
+  // QR-bibliotheek kan geen tekens buiten ASCII aan (bv. "ö"): accenten weglaten in de QR-code.
+  const ascii = t => String(t || "").normalize("NFD").replace(/[^\x20-\x7e]/g, "");
+  const epc = ["BCD", "002", "1", "SCT", d.bic || "", ascii(d.beneficiary), d.iban.replace(/\s/g, ""),
     "EUR" + d.total.toFixed(2), "", "", d.reference].join("\n");
   $("qr").innerHTML = "";
   if (window.QRCode) new QRCode($("qr"), { text: epc, width: 200, height: 200, correctLevel: QRCode.CorrectLevel.M });
