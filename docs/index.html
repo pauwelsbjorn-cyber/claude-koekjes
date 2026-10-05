@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Wafelverkoop Eindejaarsreis TSM</title>
+<meta name="description" content="Bestel wafels en koekjes ten voordele van de eindejaarsreis van TSM. Bestellen kan tot 28/10/2026.">
+<meta property="og:title" content="Wafelverkoop eindejaarsreis TSM">
+<meta property="og:description" content="Bestel je wafels online en betaal vooraf. Bestellen kan tot 28/10/2026, levering op school eind november.">
+<meta property="og:image" content="img/vanille.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+/* Layout: one narrow column like the paper order sheet — photo + product rows, sticky total bar at the bottom. */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --fg: #1d2430;
+  --muted: #5d6676;
+  --line: #dde2ea;
+  --blue: #1b5ea8;
+  --blue-ink: #ffffff;
+  --orange: #c96a17;
+  --green: #7a9a2a;
+  --field: #ffffff;
+  --ok-bg: #eef5e4;
+  --font-display: "Saira Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --font-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12161d; --surface: #1b212b; --fg: #e8ecf2; --muted: #9aa4b4; --line: #2c3442;
+    --blue: #3b7fd0; --orange: #f0954a; --green: #a4c45a; --field: #141922; --ok-bg: #1f2a1a;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html { padding-top: env(safe-area-inset-top, 0px); }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 var(--font-body); }
+img { max-width: 100%; display: block; }
+[hidden] { display: none !important; }
+.wrap { max-width: 600px; margin: 0 auto; padding: 24px 16px 130px; display: grid; gap: 22px; }
+.logo { display: grid; grid-template-columns: repeat(2, 12px); gap: 2px; justify-self: end; }
+.logo i { width: 12px; height: 12px; display: block; background: var(--line); }
+h1 { font: 700 2.6rem/1 var(--font-display); color: var(--orange); margin: 0 0 10px; text-wrap: balance; }
+h2 { font: 600 1.4rem/1.2 var(--font-display); margin: 0 0 10px; letter-spacing: .02em; }
+.intro p { margin: 0 0 8px; color: var(--muted); max-width: 60ch; }
+.intro strong { color: var(--fg); }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.chip { font: 600 .8rem/1 var(--font-body); letter-spacing: .04em; text-transform: uppercase; padding: 7px 10px; border-radius: 4px; border: 1px solid var(--line); background: var(--surface); }
+.chip b { color: var(--orange); }
+.seller { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; }
+.notice { background: var(--surface); border: 1px solid var(--orange); border-radius: 6px; padding: 12px 14px; font-weight: 600; }
+.products { display: grid; gap: 12px; }
+.prod { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; display: grid; grid-template-columns: 120px 1fr; }
+.prod.on { border-color: var(--blue); box-shadow: 0 0 0 1px var(--blue); }
+.prod .photo { background: #fff; display: flex; align-items: center; justify-content: center; border-right: 1px solid var(--line); }
+.prod .photo img { width: 120px; height: 100%; object-fit: cover; }
+.prod .body { display: grid; min-width: 0; }
+.prod .head { background: var(--blue); color: var(--blue-ink); padding: 7px 12px; }
+.prod .name { font: 600 1.15rem/1.15 var(--font-display); letter-spacing: .02em; display: block; }
+.prod .price { font: 500 .95rem/1.2 var(--font-display); opacity: .9; }
+.prod .row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; flex-wrap: wrap; }
+.prod .sub { color: var(--muted); font-size: .9rem; font-variant-numeric: tabular-nums; }
+.prod .sub b { color: var(--fg); }
+.stepper { display: flex; align-items: center; gap: 4px; }
+.stepper button { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: var(--field); color: var(--fg); font: 600 1.3rem/1 var(--font-body); cursor: pointer; }
+.stepper button:hover { border-color: var(--blue); color: var(--blue); }
+.stepper input { width: 46px; height: 38px; text-align: center; font: 700 1.1rem var(--font-body); border: 1px solid var(--line); border-radius: 4px; background: var(--field); color: var(--fg); font-variant-numeric: tabular-nums; -moz-appearance: textfield; }
+.stepper input::-webkit-outer-spin-button, .stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.fields { display: grid; gap: 12px; }
+label { display: grid; gap: 4px; font-weight: 600; font-size: .95rem; }
+label span { font-weight: 400; color: var(--muted); font-size: .85rem; }
+input[type=text], input[type=tel], input[type=email], textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 4px; background: var(--field); color: var(--fg); font: 1rem var(--font-body); }
+textarea { min-height: 70px; resize: vertical; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+.paynote { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; color: var(--muted); font-size: .95rem; }
+.paynote b { color: var(--fg); }
+.err { color: var(--orange); font-weight: 600; margin: 0; }
+.bar { position: fixed; left: 0; right: 0; bottom: 0; background: var(--surface); border-top: 1px solid var(--line); padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); }
+.bar .in { max-width: 600px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.tot { font-variant-numeric: tabular-nums; }
+.tot .eur { font: 700 1.6rem/1 var(--font-display); }
+.tot .cnt { color: var(--muted); font-size: .85rem; }
+.btn { border: 0; border-radius: 6px; padding: 12px 18px; font: 700 1rem var(--font-body); background: var(--orange); color: #fff; cursor: pointer; }
+.btn[disabled] { opacity: .45; cursor: not-allowed; }
+.btn.small { padding: 6px 10px; font-size: .85rem; background: var(--blue); }
+.done { display: grid; gap: 16px; }
+.okbox { background: var(--ok-bg); border-radius: 6px; padding: 14px 16px; }
+.okbox h2 { margin: 0 0 4px; }
+.okbox p { margin: 0; }
+.pay { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 16px; display: grid; gap: 14px; }
+.pay dl { margin: 0; display: grid; gap: 10px; }
+.pay dl > div { display: grid; grid-template-columns: 105px 1fr auto; gap: 4px 12px; align-items: center; }
+.pay dt { color: var(--muted); }
+.pay dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; min-width: 0; }
+.qr { display: grid; justify-items: center; gap: 6px; text-align: center; color: var(--muted); font-size: .9rem; }
+.qr #qr { background: #fff; padding: 10px; border-radius: 6px; }
+.lines { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.lines td { padding: 4px 0; border-bottom: 1px solid var(--line); }
+.lines td:last-child { text-align: right; }
+.lines tr:last-child td { border-bottom: 0; font-weight: 700; }
+.foot { color: var(--muted); font-size: .85rem; text-align: center; }
+@media (max-width: 420px) {
+  .prod { grid-template-columns: 92px 1fr; }
+  .prod .photo img { width: 92px; }
+  .pay dl > div { grid-template-columns: 1fr auto; }
+  .pay dt { grid-column: 1 / -1; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo" aria-hidden="true"><i></i><i style="background:var(--green)"></i><i style="background:var(--orange)"></i><i style="background:var(--blue)"></i></div>
+
+  <header class="intro">
+    <h1>Actie eindejaarsreis</h1>
+    <p>De leerlingen van het zesde en zevende jaar van <strong>TSM</strong> organiseren samen met hun leerkrachten een <strong>wafeltjesverkoop</strong> ten voordele van hun <strong>eindejaarsreis</strong>. Met jouw steun kunnen alle leerlingen mee op deze onvergetelijke reis.</p>
+    <div class="facts">
+      <span class="chip">Bestellen tot <b>28/10/2026</b></span>
+      <span class="chip">Levering op school eind november</span>
+      <span class="chip">Vooraf betalen</span>
+    </div>
+  </header>
+
+  <p class="seller">Je bestelt bij <b>Annais Van Camp</b>. De opbrengst gaat naar de eindejaarsreis van het zesde en zevende jaar.</p>
+
+  <p class="notice" id="closed" hidden>De bestelperiode is afgelopen. Bedankt voor je steun!</p>
+  <p class="notice" id="notready" hidden>Bestellen is nog niet geactiveerd. Probeer het later opnieuw.</p>
+
+  <form id="order" novalidate>
+    <div style="display:grid;gap:22px">
+      <section>
+        <h2>Kies je dozen</h2>
+        <div class="products" id="products"></div>
+      </section>
+
+      <section class="fields">
+        <h2>Jouw gegevens</h2>
+        <label for="f-name">Naam
+          <input type="text" id="f-name" autocomplete="name" placeholder="Voor- en achternaam" maxlength="100" required>
+        </label>
+        <label for="f-email">E-mailadres <span>je krijgt een bevestiging met de betaalgegevens</span>
+          <input type="email" id="f-email" autocomplete="email" placeholder="naam@voorbeeld.be" maxlength="150" required>
+        </label>
+        <label for="f-phone">Gsm-nummer <span>optioneel</span>
+          <input type="tel" id="f-phone" autocomplete="tel" placeholder="0470 12 34 56" maxlength="30">
+        </label>
+        <label for="f-note">Opmerking <span>optioneel</span>
+          <textarea id="f-note" maxlength="500" placeholder="Bv. wie haalt de dozen op?"></textarea>
+        </label>
+        <div class="hp" aria-hidden="true"><label for="f-website">Website<input type="text" id="f-website" tabindex="-1" autocomplete="off"></label></div>
+        <p class="paynote"><b>Betalen gebeurt vooraf via overschrijving.</b> Na je bestelling krijg je het rekeningnummer, een gestructureerde mededeling en een QR-code voor je bankapp. Je bestelling is pas definitief na betaling. Cash betalen is niet mogelijk.</p>
+        <p class="err" id="err" role="alert" hidden></p>
+      </section>
+    </div>
+  </form>
+
+  <section class="done" id="done" hidden>
+    <div class="okbox">
+      <h2>Bedankt! Je bestelling <span id="d-no"></span> is geregistreerd.</h2>
+      <p>Betaal nu vooraf. Pas na betaling is je bestelling definitief. Je kreeg deze gegevens ook per e-mail.</p>
+    </div>
+
+    <div class="pay">
+      <h2>Betaalgegevens</h2>
+      <dl>
+        <div><dt>Bedrag</dt><dd id="d-amount"></dd></div>
+        <div><dt>Rekening</dt><dd id="d-iban"></dd><button type="button" class="btn small" data-copy="d-iban">Kopieer</button></div>
+        <div><dt>Begunstigde</dt><dd id="d-benef"></dd></div>
+        <div><dt>Mededeling</dt><dd id="d-ref"></dd><button type="button" class="btn small" data-copy="d-ref">Kopieer</button></div>
+      </dl>
+      <div class="qr">
+        <div id="qr"></div>
+        <span>Scan met je bankapp (KBC, Belfius, BNP, ING, Argenta…) om meteen te betalen.</span>
+      </div>
+    </div>
+
+    <div class="pay">
+      <h2>Je bestelling</h2>
+      <table class="lines" id="d-lines"></table>
+    </div>
+  </section>
+
+  <p class="foot">Bedankt voor je steun! — Annais Van Camp en de laatstejaarsleerlingen van TSM</p>
+</div>
+
+<div class="bar" id="bar">
+  <div class="in">
+    <div class="tot"><div class="eur" id="t-eur">€ 0</div><div class="cnt" id="t-cnt">0 dozen</div></div>
+    <button type="submit" form="order" class="btn" id="go" disabled>Bestellen</button>
+  </div>
+</div>
+
+<script src="qrcode.min.js"></script>
+<script>
+// URL van de Google Apps Script-webapp (zie SETUP.md, stap 4).
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwi4zIC9Rm-p7upWOs6SvLc3SBDwIUhS5S3dzMs2yiBgYwnc0NDQc9B-NJaQjS8EKt2/exec";
+const DEADLINE = new Date("2026-10-28T23:59:59+01:00");
+
+const PRODUCTS = [
+  { id: "vanille",    name: "Vanillewafels",      size: "700 g",    price: 8 },
+  { id: "choco",      name: "Chocoladewafels",    size: "700 g",    price: 8 },
+  { id: "carre",      name: "Carré-confiture",    size: "700 g",    price: 8 },
+  { id: "frangi",     name: "Frangipane",         size: "700 g",    price: 8 },
+  { id: "brownies",   name: "Brownies",           size: "23 stuks", price: 10 },
+  { id: "mix",        name: "Assortimentsmix",    size: "800 g",    price: 10 },
+  { id: "suikervrij", name: "Suikervrije wafels", size: "700 g",    price: 10 },
+];
+const qty = Object.fromEntries(PRODUCTS.map(p => [p.id, 0]));
+const eur = n => "€ " + n.toLocaleString("nl-BE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const $ = id => document.getElementById(id);
+let busy = false;
+
+const list = $("products");
+PRODUCTS.forEach(p => {
+  const el = document.createElement("div");
+  el.className = "prod";
+  el.innerHTML = `
+    <div class="photo"><img src="img/${p.id}.jpg" alt="${p.name}" loading="lazy" width="120" height="66"></div>
+    <div class="body">
+      <div class="head"><span class="name">${p.name} ${p.size}</span><span class="price">${p.price} euro/doos</span></div>
+      <div class="row">
+        <span class="sub" id="sub-${p.id}">—</span>
+        <div class="stepper">
+          <button type="button" aria-label="Eén doos minder ${p.name}" data-d="-1">−</button>
+          <input id="q-${p.id}" type="number" inputmode="numeric" min="0" max="99" value="0" aria-label="Aantal dozen ${p.name}">
+          <button type="button" aria-label="Eén doos meer ${p.name}" data-d="1">+</button>
+        </div>
+      </div>
+    </div>`;
+  const input = el.querySelector("input");
+  el.querySelectorAll("button").forEach(b => b.addEventListener("click", () => set(p.id, qty[p.id] + Number(b.dataset.d))));
+  input.addEventListener("input", () => set(p.id, parseInt(input.value, 10) || 0, true));
+  list.appendChild(el);
+});
+
+function set(id, n, fromInput) {
+  qty[id] = Math.max(0, Math.min(99, n));
+  if (!fromInput) $("q-" + id).value = qty[id];
+  render();
+}
+
+function totals() {
+  let count = 0, sum = 0;
+  PRODUCTS.forEach(p => { count += qty[p.id]; sum += qty[p.id] * p.price; });
+  return { count, sum };
+}
+
+function render() {
+  PRODUCTS.forEach(p => {
+    const q = qty[p.id];
+    $("sub-" + p.id).innerHTML = q ? `${q} × ${p.price} = <b>${eur(q * p.price)}</b>` : "—";
+    $("q-" + p.id).closest(".prod").classList.toggle("on", q > 0);
+  });
+  const { count, sum } = totals();
+  $("t-eur").textContent = eur(sum);
+  $("t-cnt").textContent = count === 1 ? "1 doos" : count + " dozen";
+  $("go").disabled = count === 0 || busy || !canOrder();
+}
+
+function canOrder() { return !!SCRIPT_URL && new Date() <= DEADLINE; }
+
+function showError(msg, focusId) {
+  const err = $("err");
+  err.textContent = msg;
+  err.hidden = false;
+  if (focusId) $(focusId).focus();
+}
+
+$("order").addEventListener("submit", async e => {
+  e.preventDefault();
+  if (busy || !canOrder()) return;
+  const name = $("f-name").value.trim();
+  const email = $("f-email").value.trim();
+  if (!name) return showError("Vul je naam in, zodat we weten voor wie de dozen zijn.", "f-name");
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return showError("Vul een geldig e-mailadres in. Daar sturen we de betaalgegevens naartoe.", "f-email");
+  if (!totals().count) return showError("Kies minstens één doos.");
+  $("err").hidden = true;
+
+  busy = true;
+  $("go").textContent = "Even geduld…";
+  render();
+  try {
+    const res = await fetch(SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify({
+        name, email,
+        phone: $("f-phone").value.trim(),
+        note: $("f-note").value.trim(),
+        website: $("f-website").value,
+        qty,
+      }),
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || "De bestelling kon niet worden opgeslagen.");
+    showDone(data);
+  } catch (err) {
+    showError((err && err.message && !/fetch|network|json/i.test(err.message)) ? err.message
+      : "De bestelling kon niet worden verstuurd. Controleer je internetverbinding en probeer opnieuw.");
+  } finally {
+    busy = false;
+    $("go").textContent = "Bestellen";
+    render();
+  }
+});
+
+function showDone(d) {
+  $("d-no").textContent = d.orderNo;
+  $("d-amount").textContent = eur(d.total);
+  $("d-iban").textContent = d.iban;
+  $("d-benef").textContent = d.beneficiary;
+  $("d-ref").textContent = d.reference;
+  const t = $("d-lines");
+  t.innerHTML = "";
+  d.lines.forEach(l => {
+    const tr = t.insertRow();
+    tr.insertCell().textContent = `${l.qty} × ${l.name}`;
+    tr.insertCell().textContent = eur(l.qty * l.price);
+  });
+  const tr = t.insertRow();
+  tr.insertCell().textContent = "Totaal";
+  tr.insertCell().textContent = eur(d.total);
+
+  // SEPA/EPC-QR-code: wordt door Belgische bankapps herkend als overschrijving.
+  const epc = ["BCD", "002", "1", "SCT", d.bic || "", d.beneficiary, d.iban.replace(/\s/g, ""),
+    "EUR" + d.total.toFixed(2), "", "", d.reference].join("\n");
+  $("qr").innerHTML = "";
+  if (window.QRCode) new QRCode($("qr"), { text: epc, width: 200, height: 200, correctLevel: QRCode.CorrectLevel.M });
+  else $("qr").hidden = true;
+
+  $("order").hidden = true;
+  $("bar").hidden = true;
+  $("done").hidden = false;
+  $("done").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+document.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", () => {
+  const el = $(b.dataset.copy);
+  const done = () => { b.textContent = "Gekopieerd"; setTimeout(() => b.textContent = "Kopieer", 2000); };
+  const fallback = () => { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
+  try { navigator.clipboard.writeText(el.textContent).then(done, fallback); } catch (_) { fallback(); }
+}));
+
+if (new Date() > DEADLINE) { $("closed").hidden = false; $("order").hidden = true; $("bar").hidden = true; }
+else if (!SCRIPT_URL) { $("notready").hidden = false; }
+render();
+</script>
+</body>
+</html>
