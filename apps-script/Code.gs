@@ -153,6 +153,12 @@ function doPost(e) {
 function sendConfirmation(to, name, r) {
   const rows = r.lines.map(l =>
     `<tr><td>${l.qty} ×</td><td>${esc(l.name)}</td><td style="text-align:right">${euro(l.qty * l.price)}</td></tr>`).join('');
+  let qr = null;
+  try {
+    qr = epcQr(r);
+  } catch (err) {
+    console.error(err); // mail gaat dan zonder QR-code
+  }
   const html =
     `<p>Dag ${esc(name)},</p>
      <p>Bedankt voor je bestelling bij Björn Pauwels (voor leerling ${esc(CONFIG.LEERLING)}) voor de eindejaarsreis van TSM! Je bestelnummer is <b>${r.orderNo}</b>.</p>
@@ -165,11 +171,26 @@ function sendConfirmation(to, name, r) {
        <tr><td>Begunstigde</td><td>${esc(r.beneficiary)}</td></tr>
        <tr><td>Mededeling</td><td><b>${r.reference}</b></td></tr>
      </table>
+     ${qr ? '<p>Lees je deze mail op je computer? Scan dan deze QR-code met je bankapp:<br><img src="cid:qr" alt="QR-code voor de overschrijving"></p>' : ''}
      <p>Gebruik zeker de gestructureerde mededeling, dan kunnen we je betaling aan je bestelling koppelen.</p>
      <p><b>Betaald? Dan ben je klaar.</b> Je krijgt daarna geen bericht meer. Dat is normaal: zodra je betaling binnen is, is je bestelling in orde.</p>
      <p>De bezorging gebeurt begin december.</p>
      <p>Bedankt voor je steun!<br>${esc(CONFIG.LEERLING)} en de laatstejaarsleerlingen van TSM</p>`;
-  MailApp.sendEmail({ to: to, subject: `Je bestelling ${r.orderNo} – wafelverkoop eindejaarsreis`, htmlBody: html });
+  const mail = { to: to, subject: `Je bestelling ${r.orderNo} – wafelverkoop eindejaarsreis`, htmlBody: html };
+  if (qr) mail.inlineImages = { qr: qr };
+  MailApp.sendEmail(mail);
+}
+
+/** SEPA/EPC-QR-code (overschrijving) als GIF, met de bibliotheek in qrcode.js. Zelfde inhoud als op de bestelpagina. */
+function epcQr(r) {
+  const ascii = t => String(t || '').normalize('NFD').replace(/[^\x20-\x7e]/g, '');
+  const epc = ['BCD', '002', '1', 'SCT', r.bic || '', ascii(r.beneficiary), r.iban.replace(/\s/g, ''),
+    'EUR' + r.total.toFixed(2), '', '', r.reference].join('\n');
+  const q = qrcode(0, 'M');
+  q.addData(epc);
+  q.make();
+  const b64 = q.createDataURL(5, 4).split(',')[1];
+  return Utilities.newBlob(Utilities.base64Decode(b64), 'image/gif', 'betaling.gif');
 }
 
 // ---- Hulpfuncties ----------------------------------------------------------
