@@ -166,7 +166,8 @@ function sendConfirmation(to, name, r) {
        <tr><td>Mededeling</td><td><b>${r.reference}</b></td></tr>
      </table>
      <p>Gebruik zeker de gestructureerde mededeling, dan kunnen we je betaling aan je bestelling koppelen.</p>
-     <p>De levering gebeurt op school eind november.</p>
+     <p><b>Betaald? Dan ben je klaar.</b> Je krijgt daarna geen bericht meer. Dat is normaal: zodra je betaling binnen is, is je bestelling in orde.</p>
+     <p>De bezorging gebeurt begin december.</p>
      <p>Bedankt voor je steun!<br>${esc(CONFIG.LEERLING)} en de laatstejaarsleerlingen van TSM</p>`;
   MailApp.sendEmail({ to: to, subject: `Je bestelling ${r.orderNo} – wafelverkoop eindejaarsreis`, htmlBody: html });
 }
