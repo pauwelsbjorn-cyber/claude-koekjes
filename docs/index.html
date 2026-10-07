@@ -99,6 +99,8 @@ textarea { min-height: 70px; resize: vertical; }
 .pay dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; min-width: 0; }
 .qr { display: grid; justify-items: center; gap: 6px; text-align: center; color: var(--muted); font-size: .9rem; }
 .qr #qr { background: #fff; padding: 10px; border-radius: 6px; }
+.qr .qr-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 4px 0; }
+.qr b { color: var(--fg); }
 .lines { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
 .lines td { padding: 4px 0; border-bottom: 1px solid var(--line); }
 .lines td:last-child { text-align: right; }
@@ -177,6 +179,11 @@ textarea { min-height: 70px; resize: vertical; }
       <div class="qr">
         <div id="qr"></div>
         <span>Scan met je bankapp (KBC, Belfius, BNP, ING, Argenta…) om meteen te betalen.</span>
+        <div class="qr-btns">
+          <button type="button" class="btn small" id="qr-save">Bewaar QR-code</button>
+          <button type="button" class="btn small" id="copy-all">Kopieer alles</button>
+        </div>
+        <span><b>Betaal je met deze gsm?</b> Tik op <b>Bewaar QR-code</b>. Open daarna je bankapp, kies <b>Scannen</b> en tik op het fotoicoontje om de bewaarde QR-code te kiezen.</span>
       </div>
       <div class="okbox">
         <p><b>Betaald? Dan ben je klaar.</b> Je krijgt daarna geen bericht meer, niet op dit scherm en niet per e-mail. Dat is normaal: zodra je betaling binnen is, is je bestelling in orde.</p>
@@ -337,6 +344,8 @@ function showDone(d) {
   $("qr").innerHTML = "";
   if (window.QRCode) new QRCode($("qr"), { text: epc, width: 200, height: 200, correctLevel: QRCode.CorrectLevel.M });
   else $("qr").hidden = true;
+  $("qr-save").hidden = !$("qr").querySelector("canvas");
+  lastOrder = d;
 
   $("order").hidden = true;
   $("bar").hidden = true;
@@ -350,6 +359,50 @@ document.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click"
   const fallback = () => { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
   try { navigator.clipboard.writeText(el.textContent).then(done, fallback); } catch (_) { fallback(); }
 }));
+
+let lastOrder = null;
+const flash = (b, msg) => { const t = b.textContent; b.textContent = msg; setTimeout(() => b.textContent = t, 2000); };
+
+// Alle betaalgegevens in één keer naar het klembord, om in de bankapp te plakken.
+$("copy-all").addEventListener("click", e => {
+  const d = lastOrder;
+  const text = `Rekening: ${d.iban}\nBegunstigde: ${d.beneficiary}\nBedrag: ${eur(d.total)}\nMededeling: ${d.reference}`;
+  const fallback = () => {
+    const ta = document.createElement("textarea");
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); flash(e.target, "Gekopieerd"); } catch (_) {}
+    ta.remove();
+  };
+  try { navigator.clipboard.writeText(text).then(() => flash(e.target, "Gekopieerd"), fallback); } catch (_) { fallback(); }
+});
+
+// QR-code als afbeelding bewaren, zodat je ze op dezelfde gsm in je bankapp kunt kiezen ("scannen uit foto").
+$("qr-save").addEventListener("click", e => {
+  const src = $("qr").querySelector("canvas"), d = lastOrder;
+  const c = document.createElement("canvas");
+  c.width = 260; c.height = 300;
+  const g = c.getContext("2d");
+  g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height);
+  g.drawImage(src, 30, 30, 200, 200);
+  g.fillStyle = "#1d2430"; g.textAlign = "center";
+  g.font = "bold 16px sans-serif"; g.fillText(`Bestelling ${d.orderNo} – ${eur(d.total)}`, 130, 260);
+  g.font = "13px sans-serif"; g.fillText(d.reference, 130, 282);
+  c.toBlob(async blob => {
+    const name = `betaling-${d.orderNo}.png`;
+    const file = new File([blob], name, { type: "image/png" });
+    // iPhone/iPad: via het deelmenu kan je "Bewaar afbeelding" kiezen (komt in Foto's).
+    const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    if (ios && navigator.canShare && navigator.canShare({ files: [file] })) {
+      try { await navigator.share({ files: [file] }); } catch (_) { /* geannuleerd */ }
+      return;
+    }
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+    flash(e.target, "Bewaard");
+  }, "image/png");
+});
 
 if (new Date() > DEADLINE) { $("closed").hidden = false; $("order").hidden = true; $("bar").hidden = true; }
 else if (!SCRIPT_URL) { $("notready").hidden = false; }
