@@ -12,7 +12,7 @@ const CONFIG = {
   IBAN: 'BE60 9731 7768 8270',            // rekeningnummer voor de betalingen
   LEERLING: 'Annais Van Camp',            // leerling voor wie de verkoop loopt
   BIC: '',                                // optioneel, bv. 'GEBABEBB'
-  DEADLINE: '2026-10-28T23:59:59+01:00',  // laatste moment om te bestellen
+  DEADLINE: '2026-10-24T00:00:00+02:00',  // laatste moment om te bestellen (vervroegd afgesloten)
   BEVESTIGINGSMAIL: true,                 // koper krijgt een mail met betaalgegevens
   MELDING_NAAR: '',                       // jouw e-mailadres voor een melding per bestelling (leeg = geen)
 };
