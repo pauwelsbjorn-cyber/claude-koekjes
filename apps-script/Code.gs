@@ -12,7 +12,7 @@ const CONFIG = {
   IBAN: 'BE60 9731 7768 8270',            // rekeningnummer voor de betalingen
   LEERLING: 'Annais Van Camp',            // leerling voor wie de verkoop loopt
   BIC: '',                                // optioneel, bv. 'GEBABEBB'
-  DEADLINE: '2026-10-28T23:59:59+01:00',  // laatste moment om te bestellen
+  DEADLINE: '2026-10-24T00:00:00+02:00',  // laatste moment om te bestellen (vervroegd afgesloten)
   BEVESTIGINGSMAIL: true,                 // koper krijgt een mail met betaalgegevens
   MELDING_NAAR: '',                       // jouw e-mailadres voor een melding per bestelling (leeg = geen)
 };
@@ -65,7 +65,11 @@ function setup() {
   rows.push(['Aantal bestellingen', `=COUNTA(${SHEET_ORDERS}!B2:B)`, '', '']);
   rows.push(['Ontvangen (betaald)', `=SUMIF(${SHEET_ORDERS}!${paid}2:${paid},TRUE,${SHEET_ORDERS}!${tot}2:${tot})`, '', '']);
   rows.push(['Nog te ontvangen', `=SUMIF(${SHEET_ORDERS}!${paid}2:${paid},FALSE,${SHEET_ORDERS}!${tot}2:${tot})`, '', '']);
-  sum.getRange(1, 1, rows.length, 4).setValues(rows);
+  // setFormula gebruikt altijd Engelse functienamen en komma's, ook in een Nederlandstalige Sheet.
+  rows.forEach((r, i) => r.forEach((v, j) => {
+    const c = sum.getRange(i + 1, j + 1);
+    if (String(v).startsWith('=')) c.setFormula(v); else c.setValue(v);
+  }));
   sum.getRange(1, 1, 1, 4).setFontWeight('bold');
   sum.getRange(n, 1, 1, 4).setFontWeight('bold');
   sum.getRange(2, 4, n - 1, 1).setNumberFormat('€ #,##0.00');
@@ -113,7 +117,7 @@ function doPost(e) {
     props.setProperty('seq', String(seq));
     ref = structuredRef(seq);
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_ORDERS);
-    sheet.appendRow([new Date(), orderNo(seq), cell(name), cell(email), cell(phone)]
+    sheet.appendRow([new Date(), orderNo(seq), cell(name), cell(email), phone ? "'" + phone : '']
       .concat(qty)
       .concat([count, total, cell(ref), false, false, cell(note)]));
     row = sheet.getLastRow();
