@@ -24,7 +24,7 @@ Eerste taken in deze sessie:
 | | Buiten (gemeten op foto) | Binnen (afgeleid) |
 |---|---|---|
 | Breedte × diepte | ±29,5 × 29,5 cm | ±29,0 × 29,0 cm |
-| Hoogte | ±7,4 cm | ±7,1 cm (nog nameten in de lege doos) |
+| Hoogte | ±7,4 cm | **7,1–7,2 cm** (gemeten in de lege doos; ontwerp met 71 mm) |
 
 ## De meegeleverde insert (waarom we dit doen)
 
@@ -97,6 +97,5 @@ voor   └──────────┴──────────┴─�
 3. Boek- en briefkaart: maat met de nieuwe hoesjes, en stapelhoogte.
 4. Dikte van 10 monstertegels; maten van schets-, vijver-, score-, tuinbeloning-, beurtvolgorde- en starttegels.
 5. Diameter van een lens en een kartonnen munt; maat van een bloemtegel, marker en schip; het roer.
-6. Binnenhoogte van de lege doos (controle van de 7,1 cm).
-7. Printer en grootte van het printbed.
-8. Metalen munten: vervangen of erbij? Doel van het stoffen zakje?
+6. Printer en grootte van het printbed.
+7. Metalen munten: vervangen of erbij? Doel van het stoffen zakje?
