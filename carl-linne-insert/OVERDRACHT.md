@@ -87,15 +87,14 @@ achter ┌──────────┬──────────┬─�
 voor   └──────────┴──────────┴──────────┴──────────┘
 ```
 
-- Hoogtebudget: **direct gemeten** met alle borden in de lege doos: vrije ruimte van de bovenste plaat tot de rand **±41 mm** (bordenstapel dus ±30 mm; losse metingen gaven 28–35 mm). Opgevouwen speelbord: 4 lagen, ±8 mm; de 4 spelersborden zijn gelijmd en liggen plat. Ontwerp de bakjes **40 mm** hoog (41 mm − 1 mm speling). Kaartstapels met hoesje: reis 27 kaarten ±16 mm, solo + opzet 24 ±14 mm, boeken ±22 mm, brieven ±24 mm: plat in één laag mogelijk.
+- Hoogtebudget: **direct gemeten** met alle borden in de lege doos: vrije ruimte van de bovenste plaat tot de rand **±41 mm**, regelboek inbegrepen (bevestigd) (bordenstapel dus ±30 mm; losse metingen gaven 28–35 mm). Opgevouwen speelbord: 4 lagen, ±8 mm; de 4 spelersborden zijn gelijmd en liggen plat. Ontwerp de bakjes **40 mm** hoog (41 mm − 1 mm speling). Kaartstapels met hoesje: reis 27 kaarten ±16 mm, solo + opzet 24 ±14 mm, boeken ±22 mm, brieven ±24 mm: plat in één laag mogelijk.
 - Printinstellingen: PLA, nozzle 0,4, wand 1,6 mm, bodem 1,2 mm, 1,0 mm speling rond de doos, 0,5 mm tussen bakjes, 1,0 mm rond onderdelen. In versie 1 was het grootste bakje 143,5 mm, zodat het op elke printer past; de printer van de gebruiker is nog onbekend.
 
 ## Nog te meten of te vragen
 
-1. Bordenstapel: vrije hoogte ±41 mm gemeten. Bevestigen dat het regelboek bij die meting in de doos lag (zo niet: bakjes ±37 mm).
-2. Kaart met hoesje: exacte buitenmaat, en de hoogte van de stapel van 27 reiskaarten met hoesje.
-3. Boek- en briefkaart: maat met de nieuwe hoesjes, en stapelhoogte.
-4. Dikte van 10 monstertegels; maten van schets-, vijver-, score-, tuinbeloning-, beurtvolgorde- en starttegels.
-5. Diameter van een lens en een kartonnen munt; maat van een bloemtegel, marker en schip; het roer.
-6. Printer en grootte van het printbed.
-7. Metalen munten: vervangen of erbij? Doel van het stoffen zakje?
+1. Kaart met hoesje: exacte buitenmaat, en de hoogte van de stapel van 27 reiskaarten met hoesje.
+2. Boek- en briefkaart: maat met de nieuwe hoesjes, en stapelhoogte.
+3. Dikte van 10 monstertegels; maten van schets-, vijver-, score-, tuinbeloning-, beurtvolgorde- en starttegels.
+4. Diameter van een lens en een kartonnen munt; maat van een bloemtegel, marker en schip; het roer.
+5. Printer en grootte van het printbed.
+6. Metalen munten: vervangen of erbij? Doel van het stoffen zakje?
