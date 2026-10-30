@@ -21,6 +21,14 @@ Eerste taken in deze sessie:
 - **Versie 1 is verouderd:** gemaakt op geschatte maten, vóór we de spelonderdelen kenden. De code (modules, controles, render.sh) is herbruikbaar; de indeling moet opnieuw.
 - Draft-PR #3 op die repository bevat versie 1.
 
+## Foto's
+
+In `fotos/` (verkleind tot 1600 px):
+- `doos-*`: buitenmaten van de doos en de meegeleverde insert.
+- `onderdelen-*`: metalen munten en zakje, Humboldt en de promo-staaltegels, de meegeleverde hoesjes, een reiskaart met hoesje, de meegeleverde insert met kaarten, de 3 promo-reiskaarten.
+- `hoogte-*`: binnenhoogte van de doos, de bordenstapel en de vrije ruimte boven de borden (die laatste is de maat waarmee we rekenen).
+- `regelboek-01` t/m `-36`: alle pagina's van het regelboek, in de volgorde waarin ze gefotografeerd zijn (niet altijd de paginavolgorde; 33–36 zijn p. 34, 35, de achterkaft en de voorkaft).
+
 ## De doos
 
 | | Buiten (gemeten op foto) | Binnen (afgeleid) |
