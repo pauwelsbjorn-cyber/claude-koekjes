@@ -2,7 +2,7 @@
 //  Carl von Linné - eigen insert om te 3D-printen
 //
 //  Versie 2: maten gemeten (oktober 2026), alle kaarten in hoesjes.
-//  Alleen de dikte van munten en lenzen en de maat van het roer zijn
+//  Alleen de dikte van munten en lenzen is
 //  nog geschat (SCHATTING).
 //
 //  Gebruik: open in OpenSCAD (2021.01 of nieuwer), kies onder
@@ -76,9 +76,9 @@ lens_dikte = 2.3;
 munt_2 = 25;
 munt_1 = 20;
 munt_dikte = 2.5;
-// Roer (hout): grootste breedte met handvatten, dikte - SCHATTING
-roer = 62;
-roer_dikte = 12;
+// Roer (hout): breedte met handvatten (3 handvatten, rand Ø 45), dikte
+roer = 54;
+roer_dikte = 11;
 
 /* [4. Hout per speler - gemeten] */
 // Bloemtegel: zijde en dikte (stapels van 4)

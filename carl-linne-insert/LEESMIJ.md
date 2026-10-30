@@ -1,6 +1,6 @@
 # Carl von Linné – eigen insert (3D-print)
 
-**Versie 2 – op gemeten maten, alle kaarten in hoesjes.** Print eerst één spelersbakje als test. Nog te meten: de breedte van het roer (de uitsparing in bakje B is 71,6 × 60,6 mm).
+**Versie 2 – op gemeten maten, alle kaarten in hoesjes.** Print eerst één spelersbakje als test.
 
 ![Overzicht in de doos](overzicht.png)
 
