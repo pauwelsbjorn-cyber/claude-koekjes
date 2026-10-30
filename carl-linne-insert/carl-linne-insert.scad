@@ -1,9 +1,9 @@
 // =====================================================================
 //  Carl von Linné - eigen insert om te 3D-printen
 //
-//  Versie 1 (concept): alle maten met "SCHATTING" zijn nog niet gemeten.
-//  Vul na het meten sectie 1 en 2 in en exporteer opnieuw; de bakjes
-//  passen zich vanzelf aan de doos aan.
+//  Versie 2: maten gemeten (oktober 2026), alle kaarten in hoesjes.
+//  Alleen de dikte van munten en lenzen en de maat van het roer zijn
+//  nog geschat (SCHATTING).
 //
 //  Gebruik: open in OpenSCAD (2021.01 of nieuwer), kies onder
 //  Window > Customizer het onderdeel, druk F6 (render) en F7 (STL).
@@ -11,55 +11,88 @@
 //
 //  Indeling (bovenaanzicht, voorkant onderaan):
 //
-//    achter  +-----------+-----------+-----------------------+
-//            | speler    | speler    |  houten fiches        |
-//            | 1 + 2     | 3 + 4     |  (4 vakken)           |
-//            +-----------+-----------+-----------------------+
-//            | monstertegels         |  schets-, start- en   |
-//            | (4 vakken)            |  overige tegels (6)   |
-//            +-----------------------+-----------------------+
-//            | kaarten 2 vakken      |  kaarten 2 vakken     |
-//            | + munten erbovenop    |  + lenzen erbovenop   |
-//    voor    +-----------------------+-----------------------+
+//    achter  +---------+-------------------+--------+
+//            | A       | B kaarten klein   | C      |
+//            | kaarten | + gevorderd       | voor-  |
+//            | groot   | + solo (roer erop)| raad   |
+//            +---------+---------+---------+--------+
+//            | D staaltegels (trekbak)     | F  | G  |
+//            | 6 vakken                    |    |    |
+//            |                             +----+----+
+//            +-----------------------------+ H  | I  |
+//            | E overige tegels            |    |    |
+//    voor    +-----------------------------+----+----+
 //
-//  Daarboven liggen de borden en het regelboek plat.
+//  Alle bakjes zijn even hoog; de borden en het regelboek liggen er
+//  plat bovenop, zodat de doos ook rechtop kan staan.
 // =====================================================================
 
 /* [Wat tonen of exporteren] */
 // Kies "overzicht" om alles in de doos te zien, of één bakje om als STL te exporteren
-onderdeel = "overzicht"; // [overzicht, uiteen, plattegrond, kaarten, munten, lenzen, monsters, tegels, speler, hout]
+onderdeel = "overzicht"; // [overzicht, uiteen, plattegrond, kaarten_groot, kaarten_klein, voorraad, stalen, tegels, speler]
 
-/* [1. Doos - METEN] */
-// Binnenmaat links-rechts (mm) - SCHATTING
+/* [1. Doos - gemeten] */
+// Binnenmaat links-rechts (mm)
 doos_breedte = 290;
-// Binnenmaat voor-achter (mm) - SCHATTING
+// Binnenmaat voor-achter (mm)
 doos_diepte = 290;
-// Binnenhoogte van de bodemdoos, tot de rand (mm) - SCHATTING
-doos_hoogte = 70;
-// Stapel speelbord + spelersborden + karakterborden + regelboek, licht aangedrukt (mm) - SCHATTING
-borden_hoogte = 30;
+// Binnenhoogte van de bodemdoos, tot de rand (mm)
+doos_hoogte = 71;
+// Vrije hoogte boven alle borden en het regelboek in de doos (mm)
+vrije_hoogte = 41;
 
-/* [2. Onderdelen - METEN] */
-// Kaartbreedte (mm), met hoesje als je hoesjes gebruikt - SCHATTING
-kaart_breedte = 63.5;
-// Kaartlengte (mm), met hoesje als je hoesjes gebruikt - SCHATTING
-kaart_lengte = 88;
-// Dikte per kaart (mm): ongeveer 0.32 zonder hoesje, 0.6 met hoesje - SCHATTING
-kaart_dikte = 0.32;
-// Grootste stapel kaarten in één vak (brieven: 40)
-max_kaarten_per_vak = 40;
-// Monstertegels, 69 stuks (mm) - SCHATTING
-monster_breedte = 40;
-monster_lengte = 40;
-// Schets-, start- en overige tegels (mm) - SCHATTING
-tegel_breedte = 40;
-tegel_lengte = 40;
-// Dikte van één kartonnen tegel (mm) - SCHATTING
-tegel_dikte = 2.0;
+/* [2. Kaarten met hoesje - gemeten] */
+// Reis-, start-, promo- en opzetkaarten (31 stuks): breedte x lengte, stapelhoogte
+kaart_groot = [72, 123, 27];
+// Boekkaarten (36): hoesje 70 x 70
+kaart_boek = [73, 73, 28];
+// Briefkaarten (40): Dragon Shield American Mini
+kaart_brief = [45.5, 67, 28];
+// Solokaarten (20) + solovoorraadfiche erop
+kaart_solo = [45.5, 67, 21.5];
 
-/* [3. Printinstellingen] */
-// Wanddikte (mm): 1.6 = 4 lijnen met een 0.4 mm-nozzle
+/* [3. Tegels en fiches - gemeten] */
+// Dikte van een kartonnen tegel (mm)
+tegel_dikte = 2.3;
+staaltegel = 53;
+schetstegel = 23;
+// Score- en starttegel
+scoretegel = 26;
+vijvertegel = 21;
+tuinbeloning = [47, 32];
+beurtvolgorde = [59, 21];
+containerfiche = 21;
+gereedschapsfiche = 17;
+// Histoire Naturelle-fiche (Buffon)
+buffonfiche = [62, 14];
+// Canvas- en metamorfosefiche (Merian)
+merianfiche = 17;
+// Bestemmingsfiche (Baret), rond
+baretfiche = 17;
+// Lenzen (verbeterd 24, basis en solo 23), dikte - SCHATTING
+lens = 24;
+lens_dikte = 2.3;
+// Metalen munten: 2 Daler en 1 Daler, dikte - SCHATTING
+munt_2 = 25;
+munt_1 = 20;
+munt_dikte = 2.5;
+// Roer (hout): grootste breedte met handvatten, dikte - SCHATTING
+roer = 62;
+roer_dikte = 12;
+
+/* [4. Hout per speler - gemeten] */
+// Bloemtegel: zijde en dikte (stapels van 4)
+bloemtegel = [22, 6];
+// Achthoekige marker: breedte en hoogte (30 per speler)
+marker = [11, 10];
+// Ontdekker (grootste stuk): breedte x hoogte x dikte
+ontdekker = [25, 27, 15];
+
+/* [5. Printinstellingen] */
+// Wanddikte buitenkant (mm): 1.6 = 4 lijnen met een 0.4 mm-nozzle
 wand = 1.6;
+// Wanddikte tussen twee vakken (mm)
+binnenwand = 1.2;
 // Bodemdikte (mm)
 bodem = 1.2;
 // Vrije ruimte rondom tussen bakjes en doos, per zijde (mm)
@@ -69,17 +102,31 @@ speling_boven = 1.0;
 // Ruimte tussen twee bakjes naast elkaar (mm)
 tussenruimte = 0.5;
 // Minimale speling rond kaarten en tegels in hun vak, per zijde (mm)
-speling_vak = 1.0;
+speling_vak = 0.5;
 // Afronding van de buitenhoeken (mm)
 hoek_r = 2;
-// Breedte van de vingergleuf in kaart- en tegelbakjes (mm)
-vinger_breedte = 24;
-// Straal van de afgeronde bodem in bakjes voor losse fiches (mm)
-schep_r = 12;
-// Grootste afmeting die je printer aankan (mm)
-printbed = 220;
+// Breedte van de vingergleuf (mm)
+vinger_breedte = 22;
+// Straal van de afgeronde bodem in schepvakken (mm)
+schep_r = 10;
+// Grootste afmeting die je printer aankan (mm): Bambu Lab A1 = 256
+printbed = 256;
 // Afstand tussen de bakjes in de "uiteen"-weergave (mm)
 uiteen_afstand = 30;
+
+/* [6. Verdeling van de doos] */
+// Diepte van de achterste rij: kaarten en voorraad (mm)
+rij_achter = 129;
+// Breedte van bakje A en C (mm)
+breedte_a = 77;
+breedte_c = 58;
+// Breedte van de staaltegelbak (mm)
+breedte_d = 171;
+// Diepte van het bakje met de overige tegels (mm)
+diepte_e = 42;
+// Bakje B: breedte van de kolom boek/brief en diepte van het deel gevorderd spel (mm)
+kolom_boek = 76;
+diepte_gevorderd = 64;
 
 /* [Hidden] */
 $fn = 64;
@@ -88,101 +135,174 @@ $fn = 64;
 //  Afgeleide maten
 // ---------------------------------------------------------------------
 
-B = doos_breedte - 2 * speling_doos;   // bruikbare breedte
-D = doos_diepte - 2 * speling_doos;    // bruikbare diepte
-H = doos_hoogte - borden_hoogte - speling_boven;   // hoogte onder de borden
+BB = doos_breedte - 2 * speling_doos;   // bruikbare breedte
+DD = doos_diepte - 2 * speling_doos;    // bruikbare diepte
+H = vrije_hoogte - speling_boven;       // hoogte van alle bakjes
+t = tussenruimte;
+w = wand;
+bw = binnenwand;
 
-CB = B / 4;   // celbreedte: de doos is verdeeld in 4 kolommen
-CD = D / 3;   // celdiepte: en in 3 rijen
+rij_voor = DD - rij_achter - t;
+breedte_b = BB - breedte_a - breedte_c - 2 * t;
+diepte_d = rij_voor - diepte_e - t;
+breedte_spelers = BB - breedte_d - t;
+speler_b = (breedte_spelers - t) / 2;
+speler_d = (rij_voor - t) / 2;
 
-// Kaartbakjes zijn net hoog genoeg voor de grootste stapel; in de
-// ruimte erboven past dan nog een voorraadbakje (munten, lenzen).
-hk_nodig = ceil(bodem + max_kaarten_per_vak * kaart_dikte + 3);
-boven_kaarten = H - hk_nodig >= 12;
-HK = boven_kaarten ? hk_nodig : H;
-HV = H - HK;
-HS = H / 2;   // spelersbakjes staan per twee op elkaar
+function som(l, n) = n <= 0 ? 0 : l[n - 1] + som(l, n - 1);
+// Begin van vak i in een rij vakken met maten l, na de buitenwand
+function rij(l, i) = w + som(l, i) + i * bw;
+// Wat overblijft voor het laatste vak als de andere maten l hebben
+function rest(totaal, l) = totaal - 2 * w - som(l, len(l)) - len(l) * bw;
 
-// Per bakje: [cellen breed, hoogte, vakken naast elkaar, vakken achter elkaar,
-//             stijl, kleur, aantal te printen, inhoud]
-// Stijl "plat": vlakke bodem en vingergleuf (kaarten, tegels).
-// Stijl "schep": afgeronde bodem, fiches schuif je er makkelijk uit.
+// Een vak: [x, y, breedte, diepte, vloer, stijl, gleuf, naam]
+//   vloer: hoogte van de bodem van het vak (bodem = gewoon vak)
+//   stijl: "plat" (kaarten, tegels) of "schep" (losse fiches)
+//   gleuf: vingergleuf in de buitenwand: "voor", "achter", "links", "rechts" of ""
+
+// --- A: grote kaarten ------------------------------------------------
+vakken_a = [
+    [w, w, breedte_a - 2 * w, rij_achter - 2 * w, bodem, "plat", "links",
+     "reis 20 + start 4 + promo 3 + opzet 4"]];
+
+// --- B: kleine kaarten, gevorderd spel, solo -------------------------
+bx2 = w + kolom_boek + bw;                       // begin rechterkolom
+bw2 = breedte_b - w - bx2;                       // breedte rechterkolom
+brief_d = rest(rij_achter, []) - (kaart_boek[1] + 2 * speling_vak) - bw;
+solo_y = w + diepte_gevorderd + bw;              // begin solo-deel
+solo_d = rij_achter - w - solo_y;
+roer_vloer = H - roer_dikte - 1;
+g_kol = [16, 28, bw2 - 16 - 28 - 2 * bw];        // Buffon, start, Merian/Baret
+g_x = [for (i = [0 : 2]) bx2 + som(g_kol, i) + i * bw];
+
+vakken_b = [
+    [w, w, kolom_boek, brief_d, bodem, "plat", "voor", "brief (40)"],
+    [w, w + brief_d + bw, kolom_boek, rij_achter - 2 * w - brief_d - bw, bodem, "plat", "achter", "boek (36)"],
+    [g_x[0], w, g_kol[0], diepte_gevorderd, bodem, "plat", "voor", "Buffon (12)"],
+    [g_x[1], w, g_kol[1], 28, bodem, "plat", "voor", "starttegels (15)"],
+    [g_x[1], w + 28 + bw, g_kol[1], diepte_gevorderd - 28 - bw, bodem, "schep", "", "sololenzen (9) + Humboldt"],
+    [g_x[2], w, g_kol[2], 40, bodem, "plat", "voor", "Merian (18)"],
+    [g_x[2], w + 40 + bw, g_kol[2], diepte_gevorderd - 40 - bw, bodem, "schep", "", "Baret (8) + schip"],
+    [bx2, solo_y, bw2, solo_d - kaart_solo[0] - 2 * speling_vak - bw, bodem, "plat", "", "Linné (9)"],
+    [bx2, rij_achter - w - kaart_solo[0] - 2 * speling_vak, bw2, kaart_solo[0] + 2 * speling_vak,
+     bodem, "plat", "achter", "solo (20) + solofiche"],
+    [bx2, solo_y, bw2, solo_d, roer_vloer, "plat", "", "roer erop"]];
+
+// --- C: voorraad -----------------------------------------------------
+c_d = [lens + 2, gereedschapsfiche + 2, containerfiche + 2, 26];
+c_l = concat(c_d, [rest(rij_achter, c_d)]);
+c_naam = ["lenzen (27)", "gereedschap (24)", "containers (24)", "munten 1 (40)", "munten 2 (25)"];
+c_stijl = ["schep", "plat", "plat", "schep", "schep"];
+c_gleuf = ["", "rechts", "rechts", "", ""];
+vakken_c = [for (i = [0 : 4])
+    [w, rij(c_l, i), breedte_c - 2 * w, c_l[i], bodem, c_stijl[i], c_gleuf[i], c_naam[i]]];
+
+// --- D: staaltegels (trekbak) ----------------------------------------
+d_vb = (breedte_d - 2 * w - 2 * bw) / 3;
+d_vd = (diepte_d - 2 * w - bw) / 2;
+d_naam = ["exotisch (9)", "exotisch (9)", "start 6 + promo 6",
+          "gewoon rood (15)", "gewoon groen (15)", "gewoon blauw (15)"];
+vakken_d = [for (j = [0 : 1], i = [0 : 2])
+    [w + i * (d_vb + bw), w + j * (d_vd + bw), d_vb, d_vd, bodem, "plat",
+     j == 0 ? "voor" : "achter", d_naam[j * 3 + i]]];
+
+// --- E: overige tegels -----------------------------------------------
+e_l0 = [schetstegel + 1.5, schetstegel + 1.5, schetstegel + 1.5, scoretegel + 1.5];
+e_l = concat(e_l0, [rest(breedte_d, e_l0)]);
+e_naam = ["schets (13)", "schets (13)", "schets (13)", "score 7 + vijver 9", "tuin 6 + beurtvolgorde 5"];
+vakken_e = [for (i = [0 : 4])
+    [rij(e_l, i), w, e_l[i], diepte_e - 2 * w, bodem, "plat", "voor", e_naam[i]]];
+
+// --- F t/m I: spelersbakje -------------------------------------------
+s_bloem = bloemtegel[0] + 2;
+s_x2 = w + s_bloem + bw;
+s_b2 = speler_b - w - s_x2;
+s_bd = (speler_d - 2 * w - 2 * bw) / 3;
+s_markers = 44;
+vakken_speler = concat(
+    [for (j = [0 : 2])
+        [w, w + j * (s_bd + bw), s_bloem, s_bd, bodem, "plat", "links", str("bloemtegels ", j + 1)]],
+    [[s_x2, w, s_b2, s_markers, bodem, "schep", "", "markers (30)"],
+     [s_x2, w + s_markers + bw, s_b2, speler_d - 2 * w - s_markers - bw, bodem, "schep", "",
+      "schepen, lenzen, wolkjes, fiches, ontdekker, onderzoeker"]]);
+
+// Per bakje: [breedte, diepte, vakken, kleur, aantal te printen, inhoud]
 function bak(n) =
-    n == "kaarten"  ? [2, HK, 2, 1, "plat",  "SteelBlue",    2, "kaarten: brieven, boeken, reizen, overige"] :
-    n == "munten"   ? [2, HV, 2, 1, "schep", "Goldenrod",    1, "munten (89)"] :
-    n == "lenzen"   ? [2, HV, 2, 2, "schep", "LightSkyBlue", 1, "lenzen, grondstoffen, gevorderde fiches"] :
-    n == "monsters" ? [2, H,  2, 2, "plat",  "OliveDrab",    1, "monstertegels (69)"] :
-    n == "tegels"   ? [2, H,  3, 2, "plat",  "DarkSeaGreen", 1, "schets- (36), overige (27) en starttegels (15)"] :
-    n == "speler"   ? [1, HS, 1, 2, "schep", "IndianRed",    4, "per speler: houten markers en startlenzen"] :
-    n == "hout"     ? [2, H,  2, 2, "schep", "BurlyWood",    1, "houten fiches (98)"] :
+    n == "kaarten_groot" ? [breedte_a, rij_achter, vakken_a, "SteelBlue", 1, "A: reis-, start-, promo- en opzetkaarten"] :
+    n == "kaarten_klein" ? [breedte_b, rij_achter, vakken_b, "LightSteelBlue", 1, "B: boek, brief, solo, gevorderd spel, roer"] :
+    n == "voorraad"      ? [breedte_c, rij_achter, vakken_c, "Goldenrod", 1, "C: munten, containers, gereedschap, lenzen"] :
+    n == "stalen"        ? [breedte_d, diepte_d, vakken_d, "OliveDrab", 1, "D: staaltegels (75)"] :
+    n == "tegels"        ? [breedte_d, diepte_e, vakken_e, "DarkSalmon", 1, "E: schets-, score-, vijver-, tuin- en beurtvolgordetegels"] :
+    n == "speler"        ? [speler_b, speler_d, vakken_speler, "IndianRed", 4, "F-I: alles van één speler"] :
     undef;
 
-function bak_b(n) = bak(n)[0] * CB - tussenruimte;
-function bak_d(n) = CD - tussenruimte;
-// Binnenmaat van één vak: [breedte, diepte, hoogte]
-function vak(n) = let(p = bak(n))
-    [(bak_b(n) - (p[2] + 1) * wand) / p[2],
-     (bak_d(n) - (p[3] + 1) * wand) / p[3],
-     p[1] - bodem];
-
-// Plaats in de doos: [bakje, kolom, rij (0 = voor), hoogte]
-layout = concat(
-    [["kaarten", 0, 0, 0], ["kaarten", 2, 0, 0]],
-    boven_kaarten ? [["munten", 0, 0, HK], ["lenzen", 2, 0, HK]] : [],
-    [["monsters", 0, 1, 0], ["tegels", 2, 1, 0],
-     ["speler", 0, 2, 0], ["speler", 0, 2, HS],
-     ["speler", 1, 2, 0], ["speler", 1, 2, HS],
-     ["hout", 2, 2, 0]]);
+// Plaats in de doos: [bakje, x, y]
+layout = [
+    ["kaarten_groot", 0, rij_voor + t],
+    ["kaarten_klein", breedte_a + t, rij_voor + t],
+    ["voorraad", BB - breedte_c, rij_voor + t],
+    ["stalen", 0, diepte_e + t],
+    ["tegels", 0, 0],
+    ["speler", breedte_d + t, speler_d + t],
+    ["speler", breedte_d + t + speler_b + t, speler_d + t],
+    ["speler", breedte_d + t, 0],
+    ["speler", breedte_d + t + speler_b + t, 0]];
 
 // ---------------------------------------------------------------------
 //  Vormen
 // ---------------------------------------------------------------------
 
-module blok(w, d, h, r) {
-    hull() for (x = [r, w - r], y = [r, d - r])
+module blok(bb, d, h, r) {
+    hull() for (x = [r, bb - r], y = [r, d - r])
         translate([x, y, 0]) cylinder(r = r, h = h);
 }
 
 // Vak met afgeronde voor- en achterkant onderaan
-module schepvak(vw, vd, hh) {
+module schepvak(vb, vd, hh) {
     r = min(schep_r, vd / 2, hh - 1);
     hull() {
         for (y = [r, vd - r])
-            translate([0, y, r]) rotate([0, 90, 0]) cylinder(r = r, h = vw);
-        translate([0, 0, hh - 0.01]) cube([vw, vd, 0.01]);
+            translate([0, y, r]) rotate([0, 90, 0]) cylinder(r = r, h = vb);
+        translate([0, 0, hh - 0.01]) cube([vb, vd, 0.01]);
     }
 }
 
-// U-vormige gleuf door alle wanden van voor naar achter; de onderkant
-// raakt net de vloer, zodat je ook de onderste kaart of tegel pakt.
-module vingergleuf(d, h) {
-    r = vinger_breedte / 2;
-    hull() {
-        translate([0, -1, bodem + r]) rotate([-90, 0, 0]) cylinder(r = r, h = d + 2);
-        translate([-r, -1, max(h, bodem + r)]) cube([vinger_breedte, d + 2, 1]);
-    }
+// U-vormige gleuf door één buitenwand; de onderkant komt tot net boven
+// de vloer van het vak, zodat je ook de onderste kaart of tegel pakt.
+module vingergleuf(v, bb, d) {
+    r = min(vinger_breedte, v[2] - 2, v[3] - 2) / 2;
+    z = v[4] + r + 1;
+    // gleuf in de richting y (voor/achter) of x (links/rechts)
+    if (v[6] == "voor" || v[6] == "achter")
+        translate([v[0] + v[2] / 2, v[6] == "voor" ? -1 : v[1] + v[3] - 0.01, 0])
+            hull() {
+                translate([0, 0, z]) rotate([-90, 0, 0]) cylinder(r = r, h = w + 2);
+                translate([-r, 0, H]) cube([2 * r, w + 2, 1]);
+            }
+    if (v[6] == "links" || v[6] == "rechts")
+        translate([v[6] == "links" ? -1 : v[0] + v[2] - 0.01, v[1] + v[3] / 2, 0])
+            hull() {
+                translate([0, 0, z]) rotate([0, 90, 0]) cylinder(r = r, h = w + 2);
+                translate([0, -r, H]) cube([w + 2, 2 * r, 1]);
+            }
 }
 
-module bakje(w, d, h, kol, rij, stijl) {
-    vw = (w - (kol + 1) * wand) / kol;
-    vd = (d - (rij + 1) * wand) / rij;
+module bakje(bb, d, vakken) {
     difference() {
-        blok(w, d, h, hoek_r);
-        for (i = [0 : kol - 1], j = [0 : rij - 1])
-            translate([wand + i * (vw + wand), wand + j * (vd + wand), bodem])
-                if (stijl == "schep") schepvak(vw, vd, h - bodem + 1);
-                else cube([vw, vd, h]);
-        if (stijl == "plat")
-            for (i = [0 : kol - 1])
-                translate([wand + i * (vw + wand) + vw / 2, 0, 0]) vingergleuf(d, h);
+        blok(bb, d, H, hoek_r);
+        for (v = vakken) {
+            translate([v[0], v[1], v[4]])
+                if (v[5] == "schep") schepvak(v[2], v[3], H - v[4] + 1);
+                else cube([v[2], v[3], H]);
+            if (v[6] != "") vingergleuf(v, bb, d);
+        }
     }
 }
 
 module bak_vorm(n) {
     p = bak(n);
     if (p == undef) echo(str("LET OP  onbekend onderdeel: ", n));
-    else if (p[1] <= bodem + 2) echo(str("LET OP  geen ruimte voor bakje '", n, "' in deze doos"));
-    else bakje(bak_b(n), bak_d(n), p[1], p[2], p[3], p[4]);
+    else bakje(p[0], p[1], p[2]);
 }
 
 // ---------------------------------------------------------------------
@@ -202,35 +322,26 @@ module overzicht(uiteen = 0, met_doos = false) {
     if (met_doos) {
         translate([-speling_doos, -speling_doos, 0]) doos_doorsnede();
         color("Wheat")
-            translate([0, 0, H + speling_boven]) cube([B, D, borden_hoogte]);
+            translate([0, 0, H + speling_boven]) cube([BB, DD, doos_hoogte - vrije_hoogte]);
     }
     for (e = layout) {
         p = bak(e[0]);
-        color(p[5])
-            translate([e[1] * (CB + uiteen) + tussenruimte / 2,
-                       e[2] * (CD + uiteen) + tussenruimte / 2,
-                       e[3] + (e[3] > 0 ? uiteen : 0)])
+        color(p[3])
+            translate([e[1] * (1 + uiteen / 100), e[2] * (1 + uiteen / 100), 0])
                 bak_vorm(e[0]);
     }
 }
 
-// Bovenaanzicht met namen: [kolom-midden, rij, regel 1, regel 2]
-labels = [
-    [1, 0, "MUNTEN", "kaarten eronder"],
-    [3, 0, "LENZEN e.a.", "kaarten eronder"],
-    [1, 1, "MONSTERTEGELS", ""],
-    [3, 1, "OVERIGE TEGELS", ""],
-    [0.5, 2, "SPELER", "1 + 2"],
-    [1.5, 2, "SPELER", "3 + 4"],
-    [3, 2, "HOUTEN FICHES", ""]];
-
 module plattegrond() {
     overzicht();
-    for (l = labels)
-        color("Black") translate([l[0] * CB, (l[1] + 0.5) * CD, H + 2]) {
-            translate([0, 2, 0]) text(l[2], size = CB / 9, halign = "center", valign = "bottom");
-            translate([0, -2, 0]) text(l[3], size = CB / 12, halign = "center", valign = "top");
-        }
+    for (e = layout) {
+        p = bak(e[0]);
+        for (v = p[2]) if (v[7] != "roer erop")
+            color("Black")
+                translate([e[1] + v[0] + v[2] / 2, e[2] + v[1] + v[3] / 2, H + 2])
+                    resize([min(v[2] - 2, len(v[7]) * 2.2), 0], auto = true)
+                        text(v[7], size = 3, halign = "center", valign = "center");
+    }
 }
 
 // ---------------------------------------------------------------------
@@ -239,40 +350,67 @@ module plattegrond() {
 
 function r1(x) = round(x * 10) / 10;
 function ok(test) = test ? "OK      " : "LET OP  ";
-function per_vak(n) = floor((vak(n)[2] - 0.5) / tegel_dikte);
-function past(n, b, l) =
-    let(v = vak(n)) min(v[0], v[1]) >= min(b, l) + 2 * speling_vak
-                 && max(v[0], v[1]) >= max(b, l) + 2 * speling_vak;
+function vak(n, i) = bak(n)[2][i];
+// Past iets van b x l mm, h mm hoog, in vak i van bakje n?
+function past(n, i, b, l, h) =
+    let(v = vak(n, i), vb = min(v[2], v[3]), vl = max(v[2], v[3]))
+    vb >= min(b, l) + 2 * speling_vak && vl >= max(b, l) + 2 * speling_vak
+    && H - v[4] >= h;
+
+module check(n, i, wat, b, l, h) {
+    v = vak(n, i);
+    echo(str(ok(past(n, i, b, l, h)), n, " / ", v[7], ": vak ", r1(v[2]), " x ", r1(v[3]),
+             " x ", r1(H - v[4]), " mm voor ", wat, " ", r1(b), " x ", r1(l), " x ", r1(h), " mm"));
+}
 
 module controle() {
-    vk = vak("kaarten");
-    vm = vak("monsters");
-    vt = vak("tegels");
-    pm = per_vak("monsters");
-    pt = per_vak("tegels");
-    tegelvakken = ceil(36 / max(pt, 1)) + ceil(27 / max(pt, 1)) + ceil(15 / max(pt, 1));
+    echo(str("        Bakjes ", r1(H), " mm hoog; doos ", BB, " x ", DD, " mm bruikbaar"));
+    echo(str(ok(breedte_b > kolom_boek + 40), "Breedte bakje B: ", r1(breedte_b), " mm"));
+    echo(str(ok(diepte_d > 2 * staaltegel), "Diepte staaltegelbak: ", r1(diepte_d), " mm"));
 
-    echo(str("        Hoogte onder de borden: ", r1(H), " mm; kaartbakjes ", HK,
-             " mm, voorraad erboven ", r1(HV), " mm, spelersbakjes 2 x ", r1(HS), " mm"));
-    echo(str(ok(H >= 25), "Hoogte onder de borden (minstens 25 mm)"));
-    echo(str(ok(boven_kaarten), "Ruimte voor munten- en lenzenbakje boven de kaarten"));
-    echo(str(ok(past("kaarten", kaart_breedte, kaart_lengte)),
-             "Kaartvak ", r1(vk[0]), " x ", r1(vk[1]), " mm voor kaart ",
-             kaart_breedte, " x ", kaart_lengte, " mm"));
-    echo(str(ok(past("monsters", monster_breedte, monster_lengte)),
-             "Monstervak ", r1(vm[0]), " x ", r1(vm[1]), " mm voor tegel ",
-             monster_breedte, " x ", monster_lengte, " mm"));
-    echo(str(ok(4 * pm >= 69),
-             "Monstertegels: 4 vakken x ", pm, " = ", 4 * pm, " plaatsen voor 69 tegels"));
-    echo(str(ok(past("tegels", tegel_breedte, tegel_lengte)),
-             "Tegelvak ", r1(vt[0]), " x ", r1(vt[1]), " mm voor tegel ",
-             tegel_breedte, " x ", tegel_lengte, " mm"));
-    echo(str(ok(tegelvakken <= 6),
-             "Overige tegels: ", tegelvakken, " van de 6 vakken nodig (", pt, " tegels per vak)"));
-    for (n = ["kaarten", "munten", "lenzen", "monsters", "tegels", "speler", "hout"])
-        echo(str(ok(max(bak_b(n), bak_d(n)) <= printbed), "Printbed: ", n, " ",
-                 r1(bak_b(n)), " x ", r1(bak_d(n)), " x ", r1(bak(n)[1]),
-                 " mm, ", bak(n)[6], "x printen (", bak(n)[7], ")"));
+    check("kaarten_groot", 0, "31 kaarten", kaart_groot[0], kaart_groot[1], kaart_groot[2]);
+    check("kaarten_klein", 0, "40 briefkaarten", kaart_brief[0], kaart_brief[1], kaart_brief[2]);
+    check("kaarten_klein", 1, "36 boekkaarten", kaart_boek[0], kaart_boek[1], kaart_boek[2]);
+    check("kaarten_klein", 2, "12 fiches op één stapel", buffonfiche[1], buffonfiche[0], 12 * tegel_dikte);
+    check("kaarten_klein", 3, "15 starttegels", scoretegel, scoretegel, 15 * tegel_dikte);
+    check("kaarten_klein", 4, "10 lenzen", lens, lens, 10 * lens_dikte);
+    check("kaarten_klein", 5, "2 stapels van 9", merianfiche, 2 * merianfiche + 1, 9 * tegel_dikte);
+    check("kaarten_klein", 6, "8 fiches + schip", baretfiche, baretfiche, 8 * tegel_dikte + 10);
+    // Onder het roer: hoogte van de stapel + ruimte voor het roer
+    check("kaarten_klein", 7, "9 markers op hun zijkant + roer", marker[1], 6 * marker[0],
+          2 * marker[0] + H - roer_vloer);
+    check("kaarten_klein", 8, "20 solokaarten + roer", kaart_solo[0], kaart_solo[1],
+          kaart_solo[2] + H - roer_vloer);
+    check("kaarten_klein", 9, "roer", roer, roer, roer_dikte);
+
+    check("voorraad", 0, "27 lenzen, 2 stapels", lens, 2 * lens, 14 * lens_dikte);
+    check("voorraad", 1, "24 fiches, 2 stapels", gereedschapsfiche, 2 * gereedschapsfiche, 12 * tegel_dikte);
+    check("voorraad", 2, "24 fiches, 2 stapels", containerfiche, 2 * containerfiche, 12 * tegel_dikte);
+    // Munten liggen los: het vak moet ongeveer 1,7 keer hun volume hebben
+    for (m = [[3, 40, munt_1], [4, 25, munt_2]]) {
+        v = vak("voorraad", m[0]);
+        echo(str(ok(v[2] * v[3] * (H - bodem) >= 1.7 * m[1] * PI * pow(m[2] / 2, 2) * munt_dikte),
+                 "voorraad / ", v[7], ": vak ", r1(v[2]), " x ", r1(v[3]), " mm, losse munten"));
+    }
+
+    check("stalen", 3, "15 tegels", staaltegel, staaltegel, 15 * tegel_dikte);
+    check("stalen", 2, "12 tegels", staaltegel, staaltegel, 12 * tegel_dikte);
+
+    check("tegels", 0, "13 tegels", schetstegel, schetstegel, 13 * tegel_dikte);
+    check("tegels", 3, "16 tegels", scoretegel, scoretegel, 16 * tegel_dikte);
+    check("tegels", 4, "11 tegels", beurtvolgorde[0], tuinbeloning[1], 11 * tegel_dikte);
+
+    check("speler", 0, "4 bloemtegels", bloemtegel[0], bloemtegel[0], 4 * bloemtegel[1]);
+    check("speler", 4, "ontdekker", ontdekker[0], ontdekker[1], ontdekker[2]);
+    // Markers: 30 stuks los, ongeveer 60 % van de ruimte gevuld
+    vm = vak("speler", 3);
+    echo(str(ok(vm[2] * vm[3] * (H - bodem) * 0.6 >= 30 * 0.83 * marker[0] * marker[0] * marker[1]),
+             "speler / markers: ruimte voor 30 markers (losse stapeling)"));
+
+    for (n = ["kaarten_groot", "kaarten_klein", "voorraad", "stalen", "tegels", "speler"])
+        echo(str(ok(max(bak(n)[0], bak(n)[1]) <= printbed - 10), "Printbed: ", n, " ",
+                 r1(bak(n)[0]), " x ", r1(bak(n)[1]), " x ", r1(H), " mm, ",
+                 bak(n)[4], "x printen (", bak(n)[5], ")"));
 }
 
 // ---------------------------------------------------------------------
