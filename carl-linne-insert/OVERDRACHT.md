@@ -1,5 +1,7 @@
 # Overdracht: eigen 3D-print-insert voor Carl von Linné
 
+Terminologie: "staaltegels" = de *sample tiles* uit het regelboek. Gebruik niet "monsters": dat leest als wezens, en die zitten niet in het spel. In versie 1 van het OpenSCAD-bestand heet dat bakje nog `monsters`; hernoem het in versie 2 naar `stalen`.
+
 Plak dit als eerste bericht in een nieuwe sessie. Antwoord in het Nederlands. Werkwijze die de gebruiker wil: eerst op schatting ontwerpen, daarna met echte maten afwerken. Blijf bij de insert, geen zijsporen.
 
 ## Opdracht
@@ -39,7 +41,7 @@ Eén zwarte vacuümgevormde bak: links een grote, diepe bak waarin al het hout i
 
 **Lenzen:** 25 verbeterde lenzen + 2 reserve (display onder het speelbord).
 
-**Monstertegels:** 45 gewone, 18 exotische, 6 start, + 6 promotegels = 75. **Vierkant, ±50 × 50 mm** (gemeten op foto). Gewone en exotische liggen als aparte trekstapels naast het bord.
+**Staaltegels** (Engels: *sample tiles*; de vierkante tegels met een dier of plant, bv. *Rangifer tarandus*): 45 gewone, 18 exotische, 6 start, + 6 promotegels = 75. **Vierkant, ±50 × 50 mm** (gemeten op foto). Gewone en exotische liggen als aparte trekstapels naast het bord.
 
 **Overige tegels:** 36 schetstegels (+3 reserve), 15 starttegels (alleen voor de variant met ongelijke startvoorraad), 5 beurtvolgorde, 6 tuinbeloning, 9 vijver, 7 score.
 
@@ -56,13 +58,13 @@ Het meegeleverde pakje had 54 hoesjes van 70 × 120: 51 gebruikt, 3 over. Buiten
 
 **Solo:** 20 solokaarten, groene sololenzen (9 volgens de lijst, niet nageteld), 1 solovoorraadfiche. Geen apart solobord: een spelersbord heeft een soloachterkant.
 
-**Gevorderd spel, per personage:** Linné: 9 groene monstermarkers. Baret: 8 bestemmingsfiches + een schip. Merian: 12 canvasfiches + 6 metamorfosefiches. Buffon: 12 *Histoire Naturelle*-fiches. **Humboldt (promo):** personagebord ±8,5 × 19,5 cm + paarse jokerlens.
+**Gevorderd spel, per personage:** Linné: 9 groene staalmarkers (*sample markers*). Baret: 8 bestemmingsfiches + een schip. Merian: 12 canvasfiches + 6 metamorfosefiches. Buffon: 12 *Histoire Naturelle*-fiches. **Humboldt (promo):** personagebord ±8,5 × 19,5 cm + paarse jokerlens.
 
 **Plat bovenop:** speelbord, 4 spelersborden (twee lagen die de gebruiker zelf lijmt, met stickers; daardoor dikker), 5 personageborden (±8,5 × 19,5 cm), 4 overzichtskaarten, regelboek. Verder: een roer (houten of kartonnen stuk? nog na te vragen) en een stoffen zakje ±10 × 15,5 cm (doel nog onbekend).
 
 ## Wat het spelverloop betekent voor het ontwerp
 
-- Monstertegels liggen als trekstapels naast het bord: hun bakje is ook trekbak, met aparte vakken voor gewone, exotische en start/promo.
+- Staaltegels liggen als trekstapels naast het bord: hun bakje is ook trekbak, met aparte vakken voor gewone, exotische en start/promo.
 - Markers gaan constant heen en weer: groot vak met afgeronde bodem in het spelersbakje.
 - Bloemtegels in 3 stapels van 4 per speler: drie gleufjes.
 - Verbeterde lenzen: eigen bakje.
@@ -79,7 +81,7 @@ Het meegeleverde pakje had 54 hoesjes van 70 × 120: 51 gebruikt, 3 over. Buiten
 achter ┌──────────┬──────────┬──────────┬──────────┐
        │ speler 1 │ speler 2 │ speler 3 │ speler 4 │
        ├──────────┴──────────┼──────────┴──────────┤
-       │ monstertegels       │ voorraad: munten,   │
+       │ staaltegels         │ voorraad: munten,   │
        │ gewoon·exotisch·start│ containers, gereedsch.│
        ├──────────┬──────────┼──────────┬──────────┤
        │ kaarten  │ lenzen   │ tegels   │ solo +   │
@@ -94,7 +96,7 @@ voor   └──────────┴──────────┴─�
 
 1. Kaart met hoesje: exacte buitenmaat, en de hoogte van de stapel van 27 reiskaarten met hoesje.
 2. Boek- en briefkaart: maat met de nieuwe hoesjes, en stapelhoogte.
-3. Dikte van 10 monstertegels; maten van schets-, vijver-, score-, tuinbeloning-, beurtvolgorde- en starttegels.
+3. Dikte van 10 staaltegels; maten van schets-, vijver-, score-, tuinbeloning-, beurtvolgorde- en starttegels.
 4. Diameter van een lens en een kartonnen munt; maat van een bloemtegel, marker en schip; het roer.
 5. Printer en grootte van het printbed.
 6. Metalen munten: vervangen of erbij? Doel van het stoffen zakje?
