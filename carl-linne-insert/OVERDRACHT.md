@@ -87,12 +87,12 @@ achter ┌──────────┬──────────┬─�
 voor   └──────────┴──────────┴──────────┴──────────┘
 ```
 
-- Hoogtebudget: bordenstapel **gemeten ±28 mm** (foto, ±2 mm; nog bevestigen of het regelboek en alle borden erbij zaten). Ontwerp veilig met 30 mm stapel + 1 mm speling, dus bakjes **±40 mm** hoog (binnenhoogte 71 mm). Kaartstapels met hoesje: reis 27 kaarten ±16 mm, solo + opzet 24 ±14 mm, boeken ±22 mm, brieven ±24 mm: plat in één laag mogelijk.
+- Hoogtebudget: kartonstapel **gemeten ±28 mm** (foto, ±2 mm), mét de 4 gelijmde spelersborden (plat, niet geplooid). Op de foto ±18 lagen karton en geen regelboek, dus reken ±3 mm extra voor het regelboek. Ontwerp met **32 mm** stapel + 1 mm speling, dus bakjes **±38 mm** hoog (binnenhoogte 71 mm). Kaartstapels met hoesje: reis 27 kaarten ±16 mm, solo + opzet 24 ±14 mm, boeken ±22 mm, brieven ±24 mm: plat in één laag mogelijk.
 - Printinstellingen: PLA, nozzle 0,4, wand 1,6 mm, bodem 1,2 mm, 1,0 mm speling rond de doos, 0,5 mm tussen bakjes, 1,0 mm rond onderdelen. In versie 1 was het grootste bakje 143,5 mm, zodat het op elke printer past; de printer van de gebruiker is nog onbekend.
 
 ## Nog te meten of te vragen
 
-1. Bordenstapel: gemeten ±28 mm. Bevestigen dat speelbord, 4 gelijmde spelersborden, 5 personageborden, overzichtskaarten en regelboek er allemaal in zaten.
+1. Bordenstapel: ±28 mm gemeten mét de 4 gelijmde spelersborden; het regelboek zat er vermoedelijk niet bij (+±3 mm). Eventueel nameten met het regelboek erop.
 2. Kaart met hoesje: exacte buitenmaat, en de hoogte van de stapel van 27 reiskaarten met hoesje.
 3. Boek- en briefkaart: maat met de nieuwe hoesjes, en stapelhoogte.
 4. Dikte van 10 monstertegels; maten van schets-, vijver-, score-, tuinbeloning-, beurtvolgorde- en starttegels.
