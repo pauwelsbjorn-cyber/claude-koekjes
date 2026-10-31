@@ -23,7 +23,7 @@
 
 De metalen munten, Humboldt, de promo-reiskaarten, de promo-staaltegels en de muntzak horen bij de uitbreiding. Zonder uitbreiding gaan de kartonnen munten in dezelfde muntvakken van C; met uitbreiding blijven ze buiten de doos.
 
-Een inpakgids om bij de insert te voegen staat in `inpakgids/inpakgids.pdf`.
+Een inpakgids om bij de insert te voegen staat in `inpakgids/`: `inpakgids.pdf` (Nederlands), `packing-guide-en.pdf` (Engels) en `packanleitung-de.pdf` (Duits).
 
 ![Bovenaanzicht](plattegrond.png)
 ![Uit elkaar](uiteen.png)
