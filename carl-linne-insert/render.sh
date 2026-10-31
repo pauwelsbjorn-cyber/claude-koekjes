@@ -21,6 +21,15 @@ for p in kaarten_groot kaarten_klein voorraad stalen tegels speler; do
   "$OPENSCAD" -q -o "stl/$p.stl" -D "onderdeel=\"$p\"" "$SCAD" || echo "  overgeslagen: $p"
 done
 
+# Per spelersymbool: deksel, vulling (tweede kleur) en inplakstuk
+for s in cirkel vierkant ruit ster; do
+  for p in deksel_speler deksel_icoon icoon_plak; do
+    echo "STL: $p $s"
+    "$OPENSCAD" -q -o "stl/${p}_$s.stl" -D "onderdeel=\"$p\"" -D "symbool=\"$s\"" "$SCAD" \
+      || echo "  overgeslagen: $p $s"
+  done
+done
+
 echo "Afbeeldingen"
 $RUN "$OPENSCAD" -q -o overzicht.png --imgsize=1600,1200 --colorscheme=Tomorrow \
   --camera=0,0,0,68,0,25,0 --viewall --autocenter -D 'onderdeel="overzicht"' "$SCAD"

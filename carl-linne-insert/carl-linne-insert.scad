@@ -29,7 +29,8 @@
 
 /* [Wat tonen of exporteren] */
 // Kies "overzicht" om alles in de doos te zien, of één bakje om als STL te exporteren
-onderdeel = "overzicht"; // [overzicht, uiteen, plattegrond, kaarten_groot, kaarten_klein, voorraad, stalen, tegels, speler]
+// Deksel, vulling en inplakstuk gebruiken het symbool uit "6. Printinstellingen"
+onderdeel = "overzicht"; // [overzicht, uiteen, plattegrond, kaarten_groot, kaarten_klein, voorraad, stalen, tegels, speler, deksel_speler, deksel_icoon, icoon_plak]
 
 /* [1. Doos - gemeten] */
 // Binnenmaat links-rechts (mm)
@@ -82,7 +83,7 @@ roer_dikte = 11;
 
 /* [4. Hout per speler - gemeten] */
 // Bloemtegel: zijde en dikte (stapels van 4)
-bloemtegel = [22, 6];
+bloemtegel = [19.5, 4.4];
 // Achthoekige marker: breedte en hoogte (30 per speler)
 marker = [11, 10];
 // Ontdekker (grootste stuk): breedte x hoogte x dikte
@@ -111,6 +112,25 @@ vinger_breedte = 22;
 schep_r = 10;
 // Grootste afmeting die je printer aankan (mm): Bambu Lab A1 = 256
 printbed = 256;
+// Dikte van het deksel; het valt in een randje en ligt gelijk met de bovenkant (mm)
+deksel_dikte = 1.6;
+// Buitenwand die naast het deksel blijft staan (mm)
+deksel_rand = 0.8;
+// Speling rond het deksel, per zijde (mm)
+deksel_speling = 0.25;
+// Hoogte van het pion-icoon op het deksel, en hoe diep het erin zit (mm)
+icoon_hoogte = 32;
+icoon_diepte = 0.6;
+// Spelersymbool (achterkant van de lenzen) onder de pion: welk, grootte en lijndikte (mm)
+symbool = "cirkel"; // [cirkel, vierkant, ruit, ster, geen]
+symbool_maat = 18;
+symbool_lijn = 2;
+// Losse pion om in te plakken: zoveel kleiner rondom, voor de lijm (mm)
+icoon_plak_speling = 0.15;
+// Klikrichel aan voor- en achterkant: lengte, en hoever ze uit de rand steekt (mm).
+// Ze grijpt klik_diepte - deksel_speling in het deksel: groter = vaster.
+klik_lengte = 16;
+klik_diepte = 0.5;
 // Afstand tussen de bakjes in de "uiteen"-weergave (mm)
 uiteen_afstand = 30;
 
@@ -214,39 +234,45 @@ vakken_e = [for (i = [0 : 4])
     [rij(e_l, i), w, e_l[i], diepte_e - 2 * w, bodem, "plat", "voor", e_naam[i]]];
 
 // --- F t/m I: spelersbakje -------------------------------------------
-s_bloem = bloemtegel[0] + 2;
+s_bloem = bloemtegel[0] + 2 * speling_vak;   // krap: de stapel mag niet schuiven
 s_x2 = w + s_bloem + bw;
 s_b2 = speler_b - w - s_x2;
-s_bd = (speler_d - 2 * w - 2 * bw) / 3;
+s_bd = (speler_d - 2 * w - 2 * bw) / 3;      // ruimte per stapel; het vak staat in het midden
 s_markers = 44;
+// verhoogde vloer: de bovenste bloemtegel komt 1 mm onder het deksel
+s_bloem_vloer = H - deksel_dikte - 4 * bloemtegel[1] - 1;
 vakken_speler = concat(
     [for (j = [0 : 2])
-        [w, w + j * (s_bd + bw), s_bloem, s_bd, bodem, "plat", "links", str("bloemtegels ", j + 1)]],
+        [w, w + j * (s_bd + bw) + (s_bd - s_bloem) / 2, s_bloem, s_bloem, s_bloem_vloer, "plat", "links",
+         str("bloemtegels ", j + 1)]],
     [[s_x2, w, s_b2, s_markers, bodem, "schep", "", "markers (30)"],
      [s_x2, w + s_markers + bw, s_b2, speler_d - 2 * w - s_markers - bw, bodem, "schep", "",
       "schepen, lenzen, wolkjes, fiches, ontdekker, onderzoeker"]]);
 
-// Per bakje: [breedte, diepte, vakken, kleur, aantal te printen, inhoud]
+// Per bakje: [breedte, diepte, vakken, kleur, aantal te printen, inhoud, met deksel]
 function bak(n) =
-    n == "kaarten_groot" ? [breedte_a, rij_achter, vakken_a, "SteelBlue", 1, "A: reis-, start-, promo- en opzetkaarten"] :
-    n == "kaarten_klein" ? [breedte_b, rij_achter, vakken_b, "LightSteelBlue", 1, "B: boek, brief, solo, gevorderd spel, roer"] :
-    n == "voorraad"      ? [breedte_c, rij_achter, vakken_c, "Goldenrod", 1, "C: munten, containers, gereedschap, lenzen"] :
-    n == "stalen"        ? [breedte_d, diepte_d, vakken_d, "OliveDrab", 1, "D: staaltegels (75)"] :
-    n == "tegels"        ? [breedte_d, diepte_e, vakken_e, "DarkSalmon", 1, "E: schets-, score-, vijver-, tuin- en beurtvolgordetegels"] :
-    n == "speler"        ? [speler_b, speler_d, vakken_speler, "IndianRed", 4, "F-I: alles van één speler"] :
+    n == "kaarten_groot" ? [breedte_a, rij_achter, vakken_a, "SteelBlue", 1, "A: reis-, start-, promo- en opzetkaarten", false] :
+    n == "kaarten_klein" ? [breedte_b, rij_achter, vakken_b, "LightSteelBlue", 1, "B: boek, brief, solo, gevorderd spel, roer", false] :
+    n == "voorraad"      ? [breedte_c, rij_achter, vakken_c, "Goldenrod", 1, "C: munten, containers, gereedschap, lenzen", false] :
+    n == "stalen"        ? [breedte_d, diepte_d, vakken_d, "OliveDrab", 1, "D: staaltegels (75)", false] :
+    n == "tegels"        ? [breedte_d, diepte_e, vakken_e, "DarkSalmon", 1, "E: schets-, score-, vijver-, tuin- en beurtvolgordetegels", false] :
+    n == "speler"        ? [speler_b, speler_d, vakken_speler, "IndianRed", 4, "F-I: alles van één speler", true] :
     undef;
 
-// Plaats in de doos: [bakje, x, y]
+// Bruikbare hoogte in een bakje: tot de bovenkant, of tot onder het deksel
+function hoog(n) = H - (bak(n)[6] ? deksel_dikte : 0);
+
+// Plaats in de doos: [bakje, x, y, symbool op het deksel]
 layout = [
     ["kaarten_groot", 0, rij_voor + t],
     ["kaarten_klein", breedte_a + t, rij_voor + t],
     ["voorraad", BB - breedte_c, rij_voor + t],
     ["stalen", 0, diepte_e + t],
     ["tegels", 0, 0],
-    ["speler", breedte_d + t, speler_d + t],
-    ["speler", breedte_d + t + speler_b + t, speler_d + t],
-    ["speler", breedte_d + t, 0],
-    ["speler", breedte_d + t + speler_b + t, 0]];
+    ["speler", breedte_d + t, speler_d + t, "cirkel"],
+    ["speler", breedte_d + t + speler_b + t, speler_d + t, "vierkant"],
+    ["speler", breedte_d + t, 0, "ruit"],
+    ["speler", breedte_d + t + speler_b + t, 0, "ster"]];
 
 // ---------------------------------------------------------------------
 //  Vormen
@@ -287,7 +313,18 @@ module vingergleuf(v, bb, d) {
             }
 }
 
-module bakje(bb, d, vakken) {
+// Twee liggende staafjes langs de voor- en achterrand, op hoogte z.
+// Middelpunt op y = yc vanaf de rand: in het bakje steken ze klik_diepte
+// voorbij de wand uit, in het deksel vormen ze de groef waar ze in klikken.
+klik_r = 0.6;
+module klikstaven(bb, d, z, yc, r, l = klik_lengte) {
+    for (y = [yc, d - yc])
+        translate([bb / 2 - l / 2, y, z]) rotate([0, 90, 0]) cylinder(r = r, h = l, $fn = 24);
+}
+
+module bakje(bb, d, vakken, deksel = false) {
+    if (deksel)
+        klikstaven(bb, d, H - deksel_dikte / 2, deksel_rand + klik_diepte - klik_r, klik_r);
     difference() {
         blok(bb, d, H, hoek_r);
         for (v = vakken) {
@@ -296,13 +333,81 @@ module bakje(bb, d, vakken) {
                 else cube([v[2], v[3], H]);
             if (v[6] != "") vingergleuf(v, bb, d);
         }
+        // randje waar het deksel in valt; het rust op de binnenwanden
+        if (deksel)
+            translate([deksel_rand, deksel_rand, H - deksel_dikte])
+                blok(bb - 2 * deksel_rand, d - 2 * deksel_rand, deksel_dikte + 1, hoek_r - deksel_rand);
     }
+}
+
+// Pion: kop, hals en voet (2D, rond de oorsprong, ±30 mm hoog)
+module pion_2d() {
+    translate([0, 9.5]) circle(r = 5.5);
+    translate([0, 3.5]) scale([1, 0.35]) circle(r = 7);
+    hull() {
+        translate([0, 3]) circle(r = 3.5);
+        translate([-7.5, -10]) square([15, 1]);
+    }
+    offset(r = 1) translate([-9.5, -14]) square([19, 4]);
+}
+
+// Gevulde vorm van een spelersymbool, symbool_maat groot
+module symbool_vorm(sym) {
+    m = symbool_maat;
+    if (sym == "cirkel") circle(d = m);
+    if (sym == "vierkant") square(m * 0.85, center = true);
+    if (sym == "ruit") rotate(45) square(m * 0.75, center = true);
+    // vier punten met holle zijden
+    if (sym == "ster") difference() {
+        square(m, center = true);
+        for (x = [-1, 1], y = [-1, 1]) translate([x, y] * m / 2) circle(r = m * 0.47);
+    }
+}
+
+// Omtrek van het symbool, zoals op de achterkant van de lenzen
+module symbool_2d(sym) {
+    difference() {
+        symbool_vorm(sym);
+        offset(r = -symbool_lijn) symbool_vorm(sym);
+    }
+}
+
+// Pion met het spelersymbool eronder
+module icoon_2d(sym) {
+    translate([0, sym == "geen" ? 0 : 12]) resize([0, icoon_hoogte], auto = true) pion_2d();
+    if (sym != "geen") translate([0, -22]) symbool_2d(sym);
+}
+
+module deksel(n, sym = symbool) {
+    p = bak(n);
+    s = deksel_rand + deksel_speling;
+    difference() {
+        translate([s, s, 0])
+            blok(p[0] - 2 * s, p[1] - 2 * s, deksel_dikte, max(hoek_r - s, 0.5));
+        translate([p[0] / 2, p[1] / 2, deksel_dikte - icoon_diepte])
+            linear_extrude(icoon_diepte + 1) icoon_2d(sym);
+        // groef voor de klikrichel, iets ruimer en langer
+        klikstaven(p[0], p[1], deksel_dikte / 2, deksel_rand + klik_diepte - klik_r, klik_r + 0.1,
+                   klik_lengte + 1);
+    }
+}
+
+// Vulling van het icoon, om in een andere kleur te printen (AMS)
+module deksel_icoon(n, sym = symbool) {
+    p = bak(n);
+    translate([p[0] / 2, p[1] / 2, deksel_dikte - icoon_diepte])
+        linear_extrude(icoon_diepte) icoon_2d(sym);
+}
+
+// Losse pion en symbool om achteraf in te plakken, plat op het printbed
+module icoon_plak(sym = symbool) {
+    linear_extrude(icoon_diepte) offset(delta = -icoon_plak_speling) icoon_2d(sym);
 }
 
 module bak_vorm(n) {
     p = bak(n);
     if (p == undef) echo(str("LET OP  onbekend onderdeel: ", n));
-    else bakje(p[0], p[1], p[2]);
+    else bakje(p[0], p[1], p[2], p[6]);
 }
 
 // ---------------------------------------------------------------------
@@ -318,7 +423,7 @@ module doos_doorsnede() {
     }
 }
 
-module overzicht(uiteen = 0, met_doos = false) {
+module overzicht(uiteen = 0, met_doos = false, met_deksel = true) {
     if (met_doos) {
         translate([-speling_doos, -speling_doos, 0]) doos_doorsnede();
         color("Wheat")
@@ -326,14 +431,20 @@ module overzicht(uiteen = 0, met_doos = false) {
     }
     for (e = layout) {
         p = bak(e[0]);
-        color(p[3])
-            translate([e[1] * (1 + uiteen / 100), e[2] * (1 + uiteen / 100), 0])
-                bak_vorm(e[0]);
+        translate([e[1] * (1 + uiteen / 100), e[2] * (1 + uiteen / 100), 0]) {
+            color(p[3]) bak_vorm(e[0]);
+            // deksel erop, of erboven in de "uiteen"-weergave
+            if (p[6] && met_deksel)
+                translate([0, 0, H - deksel_dikte + (uiteen > 0 ? 25 : 0)]) {
+                    color(p[3]) deksel(e[0], e[3]);
+                    color("Ivory") deksel_icoon(e[0], e[3]);
+                }
+        }
     }
 }
 
 module plattegrond() {
-    overzicht();
+    overzicht(met_deksel = false);
     for (e = layout) {
         p = bak(e[0]);
         for (v = p[2]) if (v[7] != "roer erop")
@@ -355,12 +466,12 @@ function vak(n, i) = bak(n)[2][i];
 function past(n, i, b, l, h) =
     let(v = vak(n, i), vb = min(v[2], v[3]), vl = max(v[2], v[3]))
     vb >= min(b, l) + 2 * speling_vak && vl >= max(b, l) + 2 * speling_vak
-    && H - v[4] >= h;
+    && hoog(n) - v[4] >= h;
 
 module check(n, i, wat, b, l, h) {
     v = vak(n, i);
     echo(str(ok(past(n, i, b, l, h)), n, " / ", v[7], ": vak ", r1(v[2]), " x ", r1(v[3]),
-             " x ", r1(H - v[4]), " mm voor ", wat, " ", r1(b), " x ", r1(l), " x ", r1(h), " mm"));
+             " x ", r1(hoog(n) - v[4]), " mm voor ", wat, " ", r1(b), " x ", r1(l), " x ", r1(h), " mm"));
 }
 
 module controle() {
@@ -404,8 +515,12 @@ module controle() {
     check("speler", 4, "ontdekker", ontdekker[0], ontdekker[1], ontdekker[2]);
     // Markers: 30 stuks los, ongeveer 60 % van de ruimte gevuld
     vm = vak("speler", 3);
-    echo(str(ok(vm[2] * vm[3] * (H - bodem) * 0.6 >= 30 * 0.83 * marker[0] * marker[0] * marker[1]),
+    echo(str(ok(vm[2] * vm[3] * (hoog("speler") - bodem) * 0.6 >= 30 * 0.83 * marker[0] * marker[0] * marker[1]),
              "speler / markers: ruimte voor 30 markers (losse stapeling)"));
+    echo(str("        Deksel speler: ", r1(speler_b - 2 * (deksel_rand + deksel_speling)), " x ",
+             r1(speler_d - 2 * (deksel_rand + deksel_speling)), " x ", deksel_dikte,
+             " mm, icoon ", icoon_diepte, " mm diep, klikt ", klik_diepte - deksel_speling,
+             " mm vast, 4x printen"));
 
     for (n = ["kaarten_groot", "kaarten_klein", "voorraad", "stalen", "tegels", "speler"])
         echo(str(ok(max(bak(n)[0], bak(n)[1]) <= printbed - 10), "Printbed: ", n, " ",
@@ -420,4 +535,7 @@ controle();
 if (onderdeel == "overzicht") overzicht(met_doos = true);
 else if (onderdeel == "uiteen") overzicht(uiteen_afstand);
 else if (onderdeel == "plattegrond") plattegrond();
+else if (onderdeel == "deksel_speler") deksel("speler");
+else if (onderdeel == "deksel_icoon") deksel_icoon("speler");
+else if (onderdeel == "icoon_plak") icoon_plak();
 else bak_vorm(onderdeel);
