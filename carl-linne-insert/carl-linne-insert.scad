@@ -41,6 +41,9 @@ doos_diepte = 290;
 doos_hoogte = 71;
 // Vrije hoogte boven alle borden en het regelboek in de doos (mm)
 vrije_hoogte = 41;
+// Grootste bord bovenop (speelbord dichtgevouwen ±22 x 27, regelboek ±21 x 28): breedte x diepte (mm).
+// De borden liggen links; bakje C rechtsachter steekt ernaast uit tot onder het deksel.
+borden = [220, 280];
 
 /* [2. Kaarten met hoesje - gemeten] */
 // Reis-, start-, promo- en opzetkaarten (31 stuks): breedte x lengte, stapelhoogte
@@ -73,10 +76,14 @@ baretfiche = 17;
 // Lenzen (verbeterd 24, basis en solo 23), dikte - SCHATTING
 lens = 24;
 lens_dikte = 2.3;
-// Metalen munten: 2 Daler en 1 Daler, dikte - SCHATTING
+// Munten: 2 Daler en 1 Daler (metaal en karton even groot), dikte metaal - SCHATTING
 munt_2 = 25;
 munt_1 = 20;
 munt_dikte = 2.5;
+// Aantal munten van 1 en van 2: metaal (uitbreiding) en karton (basisspel), dikte karton
+munten_metaal = [40, 25];
+munten_karton = [45, 40];
+munt_karton_dikte = 2.3;
 // Roer (hout): breedte met handvatten (3 handvatten, rand Ø 45), dikte
 roer = 54;
 roer_dikte = 11;
@@ -157,7 +164,8 @@ $fn = 64;
 
 BB = doos_breedte - 2 * speling_doos;   // bruikbare breedte
 DD = doos_diepte - 2 * speling_doos;    // bruikbare diepte
-H = vrije_hoogte - speling_boven;       // hoogte van alle bakjes
+H = vrije_hoogte - speling_boven;       // hoogte van alle bakjes onder de borden
+H_C = doos_hoogte - speling_boven;      // bakje C: naast de borden, tot onder het deksel
 t = tussenruimte;
 w = wand;
 bw = binnenwand;
@@ -209,13 +217,21 @@ vakken_b = [
     [bx2, solo_y, bw2, solo_d, roer_vloer, "plat", "", "roer erop"]];
 
 // --- C: voorraad -----------------------------------------------------
+// C steekt naast de borden uit tot net onder het deksel van de doos; elk vak
+// krijgt een verhoogde vloer, zodat je alles bovenaan kunt pakken.
 c_d = [lens + 2, gereedschapsfiche + 2, containerfiche + 2, 26];
 c_l = concat(c_d, [rest(rij_achter, c_d)]);
-c_naam = ["lenzen (27)", "gereedschap (24)", "containers (24)", "munten 1 (40)", "munten 2 (25)"];
+c_vb = breedte_c - 2 * w;
+// Losse munten vragen ±1,7 keer hun volume; de grootste van metaal en karton telt
+function munt_ruimte(i) = 1.7 * PI * pow((i == 0 ? munt_1 : munt_2) / 2, 2)
+    * max(munten_metaal[i] * munt_dikte, munten_karton[i] * munt_karton_dikte);
+c_diepte = [14 * lens_dikte + 3, 12 * tegel_dikte + 3, 12 * tegel_dikte + 3,
+            munt_ruimte(0) / (c_vb * c_l[3]) + 2, munt_ruimte(1) / (c_vb * c_l[4]) + 2];
+c_naam = ["lenzen (27)", "gereedschap (24)", "containers (24)", "munten 1", "munten 2"];
 c_stijl = ["schep", "plat", "plat", "schep", "schep"];
 c_gleuf = ["", "rechts", "rechts", "", ""];
 vakken_c = [for (i = [0 : 4])
-    [w, rij(c_l, i), breedte_c - 2 * w, c_l[i], bodem, c_stijl[i], c_gleuf[i], c_naam[i]]];
+    [w, rij(c_l, i), c_vb, c_l[i], max(bodem, H_C - c_diepte[i]), c_stijl[i], c_gleuf[i], c_naam[i]]];
 
 // --- D: staaltegels (trekbak) ----------------------------------------
 d_vb = (breedte_d - 2 * w - 2 * bw) / 3;
@@ -249,18 +265,18 @@ vakken_speler = concat(
      [s_x2, w + s_markers + bw, s_b2, speler_d - 2 * w - s_markers - bw, bodem, "schep", "",
       "schepen, lenzen, wolkjes, fiches, ontdekker, onderzoeker"]]);
 
-// Per bakje: [breedte, diepte, vakken, kleur, aantal te printen, inhoud, met deksel]
+// Per bakje: [breedte, diepte, vakken, kleur, aantal te printen, inhoud, met deksel, hoogte]
 function bak(n) =
-    n == "kaarten_groot" ? [breedte_a, rij_achter, vakken_a, "SteelBlue", 1, "A: reis-, start-, promo- en opzetkaarten", false] :
-    n == "kaarten_klein" ? [breedte_b, rij_achter, vakken_b, "LightSteelBlue", 1, "B: boek, brief, solo, gevorderd spel, roer", false] :
-    n == "voorraad"      ? [breedte_c, rij_achter, vakken_c, "Goldenrod", 1, "C: munten, containers, gereedschap, lenzen", false] :
-    n == "stalen"        ? [breedte_d, diepte_d, vakken_d, "OliveDrab", 1, "D: staaltegels (75)", false] :
-    n == "tegels"        ? [breedte_d, diepte_e, vakken_e, "DarkSalmon", 1, "E: schets-, score-, vijver-, tuin- en beurtvolgordetegels", false] :
-    n == "speler"        ? [speler_b, speler_d, vakken_speler, "IndianRed", 4, "F-I: alles van één speler", true] :
+    n == "kaarten_groot" ? [breedte_a, rij_achter, vakken_a, "SteelBlue", 1, "A: reis-, start-, promo- en opzetkaarten", false, H] :
+    n == "kaarten_klein" ? [breedte_b, rij_achter, vakken_b, "LightSteelBlue", 1, "B: boek, brief, solo, gevorderd spel, roer", false, H] :
+    n == "voorraad"      ? [breedte_c, rij_achter, vakken_c, "Goldenrod", 1, "C: munten, containers, gereedschap, lenzen", false, H_C] :
+    n == "stalen"        ? [breedte_d, diepte_d, vakken_d, "OliveDrab", 1, "D: staaltegels (75)", false, H] :
+    n == "tegels"        ? [breedte_d, diepte_e, vakken_e, "DarkSalmon", 1, "E: schets-, score-, vijver-, tuin- en beurtvolgordetegels", false, H] :
+    n == "speler"        ? [speler_b, speler_d, vakken_speler, "IndianRed", 4, "F-I: alles van één speler", true, H] :
     undef;
 
 // Bruikbare hoogte in een bakje: tot de bovenkant, of tot onder het deksel
-function hoog(n) = H - (bak(n)[6] ? deksel_dikte : 0);
+function hoog(n) = bak(n)[7] - (bak(n)[6] ? deksel_dikte : 0);
 
 // Plaats in de doos: [bakje, x, y, symbool op het deksel]
 layout = [
@@ -295,7 +311,7 @@ module schepvak(vb, vd, hh) {
 
 // U-vormige gleuf door één buitenwand; de onderkant komt tot net boven
 // de vloer van het vak, zodat je ook de onderste kaart of tegel pakt.
-module vingergleuf(v, bb, d) {
+module vingergleuf(v, bb, d, h = H) {
     r = min(vinger_breedte, v[2] - 2, v[3] - 2) / 2;
     z = v[4] + r + 1;
     // gleuf in de richting y (voor/achter) of x (links/rechts)
@@ -303,13 +319,13 @@ module vingergleuf(v, bb, d) {
         translate([v[0] + v[2] / 2, v[6] == "voor" ? -1 : v[1] + v[3] - 0.01, 0])
             hull() {
                 translate([0, 0, z]) rotate([-90, 0, 0]) cylinder(r = r, h = w + 2);
-                translate([-r, 0, H]) cube([2 * r, w + 2, 1]);
+                translate([-r, 0, h]) cube([2 * r, w + 2, 1]);
             }
     if (v[6] == "links" || v[6] == "rechts")
         translate([v[6] == "links" ? -1 : v[0] + v[2] - 0.01, v[1] + v[3] / 2, 0])
             hull() {
                 translate([0, 0, z]) rotate([0, 90, 0]) cylinder(r = r, h = w + 2);
-                translate([0, -r, H]) cube([w + 2, 2 * r, 1]);
+                translate([0, -r, h]) cube([w + 2, 2 * r, 1]);
             }
 }
 
@@ -322,20 +338,20 @@ module klikstaven(bb, d, z, yc, r, l = klik_lengte) {
         translate([bb / 2 - l / 2, y, z]) rotate([0, 90, 0]) cylinder(r = r, h = l, $fn = 24);
 }
 
-module bakje(bb, d, vakken, deksel = false) {
+module bakje(bb, d, vakken, deksel = false, h = H) {
     if (deksel)
-        klikstaven(bb, d, H - deksel_dikte / 2, deksel_rand + klik_diepte - klik_r, klik_r);
+        klikstaven(bb, d, h - deksel_dikte / 2, deksel_rand + klik_diepte - klik_r, klik_r);
     difference() {
-        blok(bb, d, H, hoek_r);
+        blok(bb, d, h, hoek_r);
         for (v = vakken) {
             translate([v[0], v[1], v[4]])
-                if (v[5] == "schep") schepvak(v[2], v[3], H - v[4] + 1);
-                else cube([v[2], v[3], H]);
-            if (v[6] != "") vingergleuf(v, bb, d);
+                if (v[5] == "schep") schepvak(v[2], v[3], h - v[4] + 1);
+                else cube([v[2], v[3], h]);
+            if (v[6] != "") vingergleuf(v, bb, d, h);
         }
         // randje waar het deksel in valt; het rust op de binnenwanden
         if (deksel)
-            translate([deksel_rand, deksel_rand, H - deksel_dikte])
+            translate([deksel_rand, deksel_rand, h - deksel_dikte])
                 blok(bb - 2 * deksel_rand, d - 2 * deksel_rand, deksel_dikte + 1, hoek_r - deksel_rand);
     }
 }
@@ -407,7 +423,7 @@ module icoon_plak(sym = symbool) {
 module bak_vorm(n) {
     p = bak(n);
     if (p == undef) echo(str("LET OP  onbekend onderdeel: ", n));
-    else bakje(p[0], p[1], p[2], p[6]);
+    else bakje(p[0], p[1], p[2], p[6], p[7]);
 }
 
 // ---------------------------------------------------------------------
@@ -427,7 +443,8 @@ module overzicht(uiteen = 0, met_doos = false, met_deksel = true) {
     if (met_doos) {
         translate([-speling_doos, -speling_doos, 0]) doos_doorsnede();
         color("Wheat")
-            translate([0, 0, H + speling_boven]) cube([BB, DD, doos_hoogte - vrije_hoogte]);
+            translate([0, (DD - borden[1]) / 2, H + speling_boven])
+                cube([borden[0], borden[1], doos_hoogte - vrije_hoogte]);
     }
     for (e = layout) {
         p = bak(e[0]);
@@ -498,11 +515,14 @@ module controle() {
     check("voorraad", 1, "24 fiches, 2 stapels", gereedschapsfiche, 2 * gereedschapsfiche, 12 * tegel_dikte);
     check("voorraad", 2, "24 fiches, 2 stapels", containerfiche, 2 * containerfiche, 12 * tegel_dikte);
     // Munten liggen los: het vak moet ongeveer 1,7 keer hun volume hebben
-    for (m = [[3, 40, munt_1], [4, 25, munt_2]]) {
-        v = vak("voorraad", m[0]);
-        echo(str(ok(v[2] * v[3] * (H - bodem) >= 1.7 * m[1] * PI * pow(m[2] / 2, 2) * munt_dikte),
-                 "voorraad / ", v[7], ": vak ", r1(v[2]), " x ", r1(v[3]), " mm, losse munten"));
+    for (i = [0 : 1]) {
+        v = vak("voorraad", 3 + i);
+        echo(str(ok(v[2] * v[3] * (hoog("voorraad") - v[4]) >= munt_ruimte(i)),
+                 "voorraad / ", v[7], ": vak ", r1(v[2]), " x ", r1(v[3]), " x ", r1(hoog("voorraad") - v[4]),
+                 " mm voor ", munten_metaal[i], " metalen of ", munten_karton[i], " kartonnen munten, los"));
     }
+    echo(str(ok(borden[0] <= BB - breedte_c - t), "Borden bovenop ", borden[0], " mm breed: naast bakje C (",
+             r1(H_C), " mm hoog)"));
 
     check("stalen", 3, "15 tegels", staaltegel, staaltegel, 15 * tegel_dikte);
     check("stalen", 2, "12 tegels", staaltegel, staaltegel, 12 * tegel_dikte);
@@ -524,7 +544,7 @@ module controle() {
 
     for (n = ["kaarten_groot", "kaarten_klein", "voorraad", "stalen", "tegels", "speler"])
         echo(str(ok(max(bak(n)[0], bak(n)[1]) <= printbed - 10), "Printbed: ", n, " ",
-                 r1(bak(n)[0]), " x ", r1(bak(n)[1]), " x ", r1(H), " mm, ",
+                 r1(bak(n)[0]), " x ", r1(bak(n)[1]), " x ", r1(bak(n)[7]), " mm, ",
                  bak(n)[4], "x printen (", bak(n)[5], ")"));
 }
 

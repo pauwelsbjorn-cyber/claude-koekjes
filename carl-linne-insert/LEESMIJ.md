@@ -6,7 +6,7 @@
 
 ## Idee
 
-- **Alles op één hoogte (40 mm) onder de borden.** Speelbord, spelersborden, personageborden, overzichtskaarten en regelboek liggen er plat bovenop. Daardoor kan de doos ook rechtop staan zonder dat er iets door elkaar valt.
+- **Bijna alles op één hoogte (40 mm) onder de borden.** Speelbord, spelersborden, personageborden, overzichtskaarten en regelboek (samen ±22 × 28 cm) liggen er links plat bovenop, met het regelboek bovenaan. Rechts blijft een strook vrij: achteraan steekt de voorraad C ernaast uit tot onder het deksel (70 mm), vooraan is plaats voor de linnen muntzak. Daardoor kan de doos ook rechtop staan zonder dat er iets door elkaar valt.
 - **Elke kaartsoort in hoesje heeft een eigen vak**, met speling rondom en een vingergleuf.
 - **Bakjes die je op tafel zet.** Elke speler krijgt een eigen bakje, de staaltegelbak is ook de trekbak.
 - **Geen zakjes en geen verstopte laag.**
@@ -16,12 +16,14 @@
 |---|---|---|---|
 | A `kaarten_groot` | 1 | 77 × 129 × 40 | 31 reis-, start-, promo- en opzetkaarten |
 | B `kaarten_klein` | 1 | 152 × 129 × 40 | boek, brief, solo; gevorderd spel (Buffon, Merian, Baret, Linné, Humboldt, sololenzen, starttegels); het roer ligt bovenop het solodeel |
-| C `voorraad` | 1 | 58 × 129 × 40 | metalen munten 1 en 2, containers, gereedschap, 27 verbeterde lenzen |
+| C `voorraad` | 1 | 58 × 129 × **70** | munten 1 en 2 (40 + 25 metalen of 45 + 40 kartonnen), containers, gereedschap, 27 verbeterde lenzen; vakken met verhoogde vloer |
 | D `stalen` | 1 | 171 × 116 × 40 | 75 staaltegels in 6 vakken (trekbak) |
 | E `tegels` | 1 | 171 × 42 × 40 | schets-, score-, vijver-, tuinbeloning- en beurtvolgordetegels |
 | F–I `speler` | 4 | 58 × 79 × 40 | per speler: 3 stapels bloemtegels, markers, 6 lenzen en de rest van het hout; met klikdeksel |
 
-De kartonnen munten gaan niet in de doos: je speelt met de 65 metalen munten.
+De metalen munten, Humboldt, de promo-reiskaarten, de promo-staaltegels en de muntzak horen bij de uitbreiding. Zonder uitbreiding gaan de kartonnen munten in dezelfde muntvakken van C; met uitbreiding blijven ze buiten de doos.
+
+Een inpakgids om bij de insert te voegen staat in `inpakgids/inpakgids.pdf`.
 
 ![Bovenaanzicht](plattegrond.png)
 ![Uit elkaar](uiteen.png)
